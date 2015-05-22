@@ -92,9 +92,9 @@
 				<section>
 					<h2>What can we do with JavaScript?</h2>
 					<ul>
-						<li class="fragment">May don't wanna learn it!</li>
-						<li class="fragment">May avoid learning it even if forced to!</li>
-						<li class="fragment">May Ignore it!</li>
+						<li>May don't wanna learn it!</li>
+						<li>May avoid learning it even if forced to!</li>
+						<li>May Ignore it!</li>
 					</ul> 
 				</section>
 
@@ -119,12 +119,19 @@
                 			</a>is largest module repository.
 						</li>
 						<li class="fragment">
+							Compensating for all the hatred all these years.
+						</li>
+						<li class="fragment">
 							<a href="https://www.youtube.com/watch?v=yI8rYQtkwC4" target="_blank">
                 				JavaScript is everywhere.
-                			</a>Can't hide.
+                			</a>Can't hide it.
 						</li>
 						<li class="fragment">
 							<a href="https://leanpub.com/understandinges6/read/" target="_blank">ES6 is coming!</a>
+							It'll find you.
+						</li>
+						<li class="fragment">
+							Catch it before it catches you!
 						</li>
 					</ul> 
 				</section>
@@ -139,28 +146,29 @@
 				</section>
 
 				<section>
-					<h2>Questions: <i><b>$P</b></i></h2>
-					<ul>
-						<li class="fragment">Birth Year?</li>
-						<li class="fragment">Birth Place?</li>
-						<li class="fragment">Birth Name? (Add Java cos it is popular)</li>
-						<li class="fragment">Father?</li>
-					</ul> 
+					<h2>Why JavaScript's #1?</h2>
+					<h1 class="fragment">How come JavaScript?</h1>
+					<h4 class="fragment">Come on, I thought it's Java/C#/Ruby/...</h4>
 				</section>
 
 				<section>
-					<h2>Why JavaScript?</h2>
-					<h2 class="fragment">Why Only JavaScript?</h2>
+					<h2>Questions: <i><b>$P</b></i></h2>
+					<ul>
+						<li>Birth Year?</li>
+						<li>Birth Place?</li>
+						<li>Birth Name? (Add Java cos it is popular)</li>
+						<li>Father?</li>
+					</ul> 
 				</section>
 
 				<section>
 					<h2>Slow Rise To The Top:</h2>
 					<ul>
-						<li class="fragment">1995: Most Despised language due to B#@!# War!</li>
+						<li class="fragment">1995: Most Despised language due to B#@!# War! <i><b>$P</b></i></li>
 						<li class="fragment">2004: Gmail AJAXed us!</li>
 						<li class="fragment">2006: jQuery's here for rescue!</li>
-						<li class="fragment">2008: JavaScript Good Parts Book!</li>
-						<li class="fragment">2009: JavaScript Jumped off Browser!</li>
+						<li class="fragment">2008: JavaScript Good Parts Book. Discovery of Decade!</li>
+						<li class="fragment">2009: JavaScript Jumped off Browser! <i><b>$P</b></i></li>
 						<li class="fragment">2010: No Flash on iPhone/iPad; Go HTML5 Way!</li>
 						<li class="fragment">2015: JavaScript is Everywhere!</li>
 					</ul> 
@@ -173,14 +181,103 @@
 						<li>EmberJS</li>
 						<li>AngularJS</li>
 						<li>ReactJS</li>
+						<li>Aurelia</li>
+						<li>BatmanJS</li>
+						<li>PhantomJS</li>
 						<li>NodeJS / ioJS</li>
-						<li>Yeoman, Bower, Gulp, Grunt ...<a target="_blank" href="http://microjs.com">microjs.com</a></li>
+						<li>Yeoman, Bower, Gulp, Karma, Jasmine, Protractor, ...<li>
+						<a target="_blank" href="http://microjs.com">microjs.com</a></li>
 					</ul> 
 				</section>
 
 				<section>
 					<img width="900" height="650" src="images/shower.gif" />
 				</section>
+
+				<section>
+					<h2>Let's get our hands <u>lllli</u> on function</h2>
+				</section>
+
+				<section>
+					<h2>JS functions are first class citizens.</h2>
+				</section>
+
+				<section>
+					<h2>Functions are callable objects:</h2>
+					<pre><code data-trim>
+function f() {
+	return 'Hello World';
+}
+//or
+var f = function () {
+	return 'Hello World';	
+};
+
+f.name 		//f
+f.call() 	//'Hello World'
+f.apply() 	//'Hello World'
+f.arguments	//?
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Array object methods:</h2>
+					<pre><code data-trim>
+var a = [1, 2, 3];
+
+a.forEach()
+a.map()
+a.filter()
+a.reduce() //$P
+a.some()
+a.every()
+a.indexOf()
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Find common between 2 arrays:</h2>
+					<pre><code data-trim>
+var a = [1, 2, 5, 4, 3];
+var b = [5, 6, 3, 2];
+
+function findCommon(a, b) {
+  var common = [];
+  a.forEach(//Write the logic here
+  //...
+  );
+  return common;
+}
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Common between 2 or more arrays?</h2>
+					<pre><code data-trim>
+var a = [1, 2, 5, 4, 3];
+var b = [5, 6, 3, 1, 2, 7];
+var c = [6, 1, 3, 2];
+
+function findCommon(a, b) {
+  var common = [];
+  a.forEach(//Write the logic here
+  //...
+  );
+  return common;
+}
+
+					</code></pre>
+				</section>
+				
+
+
+
+
+
+
+
 
 			</div>
 
