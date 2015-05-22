@@ -16,9 +16,9 @@ ul .fragment {
 	margin-top: 10px;
 }
 
-/*.reveal .slides > section, .reveal .slides > section > section {
+.reveal .slides > section, .reveal .slides > section > section {
 	padding: 0;
-}*/
+}
 
 .reveal section img {
 	border: none;
