@@ -1,0 +1,203 @@
+- Functional programming helps us to abstract away common/generic operations into resuable, composable building blocks.
+
+- FP breaks a problem/solution pair into one or more functions working in unison making our code self-descriptive, consise, and durable.
+
+- Very similar to Lego game where each block has generic/specific role, and compose with other blocks to build/solve something bigger in an elegant way. Composition, Web Components, Composibility.
+
+- Functional programming on collections/arrays:
+forEach
+map
+filter
+concatAll
+reduce
+zip
+
+- These functions simplify asynchronous programming to race conditions, propagate and handle asynchronous errors, and sequence events and AJAX requests.
+
+What's the difference between:
+Synchronous programming
+Asynchronous programming
+Procedural
+Imperative
+Functional
+Functional Reactive
+
+
+- jhusain/learnrx
+Exercise 1: Print all the names in an array
+Exercise 2: Use forEach to print all the names in an array
+- Using ES6 arrow notation in firefox v24+
+Exercise 3: Project an array of videos into an array of {id,title} pairs using forEach()
+Exercise 4: Implement map()
+Exercise 5: Use map() to project an array of videos into an array of {id,title} pairs
+Exercise 6: Use forEach() to collect only those videos with a rating of 5.0
+
+
+
+
+
+
+
+
+http://awardwinningfjords.com/2014/04/21/functional-programming-in-javascript-equals-garbage.html
+
+AGENDA:
+1. Syncronous Progamming
+2. Asyncronous Programming
+3. Function Programming
+4. Reactive Programming
+5. Function Programming using Arrays
+6. Function Reactive Programming using Observable
+7. Build Observable from scratch and use it for some FR programming
+
+SYNOPSIS:
+Observable = Collection over time;
+
+We can handle multiple asynchronous data/events stream(s) and subscribe to react(process) on it using the Observer object. The Observable notifies the subscribed Observer instance whenever an event occurs.
+
+Because observable sequences are data streams, we can query them using standard query operators implemented by the Observable type. Thus we can filter, project, aggregate, compose and perform time-based operations on multiple events easily by using these operators. In addition, there are a number of other reactive stream specific operators that allow powerful queries to be written. Cancellation, exceptions, and synchronization are also handled gracefully by using the methods on the Observable object.
+
+y = f(x)
+y = f(f(x))
+
+
+
+function Observable(forEach) {
+	//Internal definition of forEach on Observables that is passed in while creating an observable
+	this._forEach = forEach;
+}
+
+Observable.prototype = {
+	//External/API definition of forEach that handle the below 2 variations for forEaching over observables
+	//ensuring that we always forEach over an observable
+	forEach: function(onNext, onError, onCompleted) {
+		//API for obser.forEach(onNext => ..., e => ..., c => ...)
+		if(typeof onNext === 'function') {
+			//create an observer object and assign the 3 argument functions to it
+			return this._forEach({
+				onNext: onNext,
+				onError: onError || function () {},
+				onCompleted: onCompleted || function () {}
+			});
+		} else {
+			//API for obser.forEach({onNext: x => ..., onError: e => ..., onCompleted: c => ...})
+			//onNext = {onNext: x => ..., onError: e => ..., onCompleted: c => ...}
+			return this._forEach(onNext)
+		}
+	},
+	map: function (transformationFunction) {
+		var self = this;
+		return new Observable(function forEach(observer) {
+			return self.forEach(
+				function onNext(event) { observer.onNext(transformationFunction(event)); },
+				function onError(event) { observer.onError(event); },
+				function onCompleted() { observer.onCompleted(); }
+			);
+		});
+	},
+	filter: function (testFunction) {
+		var self = this; //source observable
+		return new Observable(function forEach(observer) {
+			return self.forEach(
+				function onNext(event) {
+					if(testFunction(event)) {
+						observer.onNext(event);
+					}
+				},
+				function onError(event) { observer.onError(event); },
+				function onCompleted() { observer.onCompleted(); }
+			);
+		});
+	},
+	take: function (limitTo) {
+		var self = this;
+		return Observable(function forEach(observer) {
+			var counter = 0,
+				subcription = self.forEach(
+					function onNext(v) {
+						observer.onNext(v);
+						counter++;
+						if(counter === limitTo) {
+							observer.onCompleted();
+							subcription.dispose();
+						}
+					},
+					function onError(e) {
+						observer.onError(e);
+					},
+					function onCompleted() {
+						observer.onCompleted();
+					}
+				);
+			return subcription;
+
+		});
+	}
+}
+
+Observable.fromEvent = function(domElement, eventName) {
+	return new Observable(function forEach(observer) {
+		var handler = function(event) {
+			observer.onNext(event);
+		};
+
+		domElement.addEventListener(eventName, handler);
+
+		//Subcription object
+		return {
+			dispose: function () {
+				domElement.removeEventListener(eventName, handler);
+			}
+		};
+	});
+};
+
+//debugger;
+
+var button = document.getElementById("button");
+
+var clicks =
+	Observable.
+		fromEvent(document, "mousemove").
+		filter(function (e) {
+			return e.pageX > 100;
+		}).
+		map(function (e) {
+			return e;
+		});
+
+console.log(clicks);
+
+clicks.forEach(function (e) {
+	console.log(e.pageX, e.pageY);
+});
+
+//about:flags
+
+// Observable.fromObservations = function(object) {
+// 	return new Observable(function forEach(observer) {
+// 		var handler = function(e) {
+// 			observer.onNext(e);
+// 		}
+
+// 		Object.observe(object, handler);
+
+// 		//Subscription
+// 		return {
+// 			dispose: function () {
+// 				Object.unobserve(object, handler);
+// 			}
+// 		}
+// 	});
+// };
+
+// var person = {name: "Pinakin"};
+
+// Observable.
+// 	fromObservations(person).
+// 	forEach(function (changes) {
+// 		console.log(changes);
+// 	});
+
+// person.age = 33;
+// person.loves = "JavaScript";
