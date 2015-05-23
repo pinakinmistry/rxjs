@@ -225,6 +225,7 @@ var f = function () {
 f.name 		//f
 f.call() 	//'Hello World'
 f.apply() 	//'Hello World'
+f.prototype	//?
 f.arguments	//?
 					</code></pre>
 				</section>
@@ -298,9 +299,9 @@ function findCommon(a, b) {
 				<section>
 					<h2>Higher Order Functions?</h2>
 					<h2 class="fragment">y = f(x)</h2>
-					<h4 class="fragment">//when did we learn function in school?</h4>
+					<h4 class="fragment">//when did we learn functions in school?</h4>
 					<h1 class="fragment">y = f(f(x))</h1>
-					<h4 class="fragment">//I used to hide under the bench on this topic</h4>
+					<h4 class="fragment">//I used to hide under the bench on this topic. <span class="fragment">Seriously.</span></h4>
 				</section>
 
 				<section>
@@ -357,7 +358,7 @@ console.log(sum(range(1, 10)));
 				<section>
 					<h2>Abstracting array traversal:</h2>
 					<pre><code data-trim>
-var array = [1, 2, 3];
+var a = [1, 2, 3];
 
 for (var i = 0; i < array.length; i++) {
   var current = array[i];
@@ -369,19 +370,21 @@ function logEach(array) {
   for (var i = 0; i < array.length; i++)
   console.log(array[i]);
 }
+
+logEach(a);	//1, 2, 3
 					</code></pre>
 				</section>
 
 				<section>
 					<h2>Passing action function to forEach:</h2>
 					<pre><code data-trim>
-function forEach(array , action) {
-  for (var i = 0; i < array.length; i++) {
-    action(array[i]);
+Array.prototype.forEach = function(action) {
+  for (var i = 0; i < this.length; i++) {
+    action(this[i]);
   }
-}
+};
 
-forEach(["Log", "me", "in", "console"], console.log);
+["Log", "me", "in", "console"].forEach(console.log);
 					</code></pre>
 				</section>
 
@@ -404,14 +407,43 @@ forEach(["Log", "me", "in", "console"], console.log);
 				</section>
 
 				<section>
-					<h2>Build things with precision:</h2>
+					<h2>Build things with components:</h2>
 					<img width="600" height="550" src="images/watch.jpeg" />
+				</section>
+
+				<section>
+					<h2>Like building blocks in Lego:</h2>
+					<img width="600" height="550" src="images/lego-components.jpg" />
 				</section>
 
 				<section>
 					<h3>Modules, Web Components => Lego Game</h3>
 					<img width="800" height="650" src="images/lego.jpg" />
 				</section>
+
+				<section data-transition="fade">
+					<h3>ES6 Arrow Function =></h3>
+					f = function (x) { return x + 1; }
+				</section>
+
+				<section data-transition="fade">
+					<h3>ES6 Arrow Function =></h3>
+					f = x => x + 1
+				</section>
+
+				<section>
+					<h2>Exercises</h2>
+					<a target="_blank" href="http://jhusain.github.io/learnrx">@jhusain.github.io/learnrx</a>
+					<br>
+					Use Firefox v22+ for ES6 Arrow function
+				</section>
+
+				<section>
+					<h2>Coding Observable from Scratch:</h2>
+					Coming soon ...
+				</section>
+
+
 
 
 
@@ -449,7 +481,7 @@ forEach(["Log", "me", "in", "console"], console.log);
 				history: true,
 				center: true,
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
 
 				// Optional reveal.js plugins
 				dependencies: [
