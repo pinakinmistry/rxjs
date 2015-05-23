@@ -85,7 +85,7 @@
 						<li>Written in HTML file.</li>
 						<li>Runs only in browser.</li>
 						<li>Is it Still in Use?</li>
-						<li>Worst case, ...</li>
+						<li>Worst case, how it's #trending?</li>
 					</ul> 
 				</section>
 
@@ -142,7 +142,7 @@
 
 				<section>
 					<h2><a href="">Show Time</a></h2>
-					Powered by JavaScript
+					- Powered by JavaScript.
 				</section>
 
 				<section>
@@ -199,7 +199,7 @@
 				</section>
 
 				<section>
-					<h2>Please ask me ... <span class="fragment">Isn't this bad?</span></h2>
+					<h2>Please ask me ... <span class="fragment">isn't this bad?</span></h2>
 				</section>
 
 				<section>
@@ -221,6 +221,7 @@ var f = function () {
   return 'Hello World';	
 };
 
+//Function being an object has properties and methods in it:
 f.name 		//f
 f.call() 	//'Hello World'
 f.apply() 	//'Hello World'
@@ -251,9 +252,11 @@ var b = [5, 6, 3, 2];
 
 function findCommon(a, b) {
   var common = [];
+  
   a.forEach(//Write the logic here
   //...
   );
+  
   return common;
 }
 					</code></pre>
@@ -269,9 +272,11 @@ var d = [6, 8, 2, 1, 3];
 
 function findCommon(a, b) {
   var common = [];
+  
   a.forEach(//Write the logic here
   //...
   );
+  
   return common;
 }
 					</code></pre>
@@ -289,7 +294,136 @@ function findCommon(a, b) {
 						<li>Immutable state</li>
 					</ul> 
 				</section>
+
+				<section>
+					<h2>Higher Order Functions?</h2>
+					<h2 class="fragment">y = f(x)</h2>
+					<h4 class="fragment">//when did we learn function in school?</h4>
+					<h1 class="fragment">y = f(f(x))</h1>
+					<h4 class="fragment">//I used to hide under the bench on this topic</h4>
+				</section>
+
+				<section>
+					<h2>Hide details, give me the f(g)ist:</h2>
+					<pre><code data-trim>
+var total = 0, count = 1;
+
+while (count <= 10) {
+  total += count;
+  count += 1;
+}
+console.log(total);
+
+//Using Higher Order Functions:
+console.log(sum(range(1, 10)));
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Recipe Analogy:</h2>
+					<div>
+						Put 1 cup of dried peas per person into a container. Add water until the peas are well covered. Leave the peas in water for at least 12 hours. Take the peas out of the water and put them in a cooking pan. Add 4 cups of water per person. Cover the pan and keep the peas simmering for two hours. Take half an onion per person. Cut it into pieces with a knife. Add it to the peas. Take a stalk of celery per person. Cut it into pieces with a knife. Add it to the peas. Take a carrot per person. Cut it into pieces. With a knife! Add it to the peas. Cook for 10 more minutes.
+					</div>
+					<br>
+					<h3 class="fragment">What's this approach called?</h3>
+				</section>
+
+				<section>
+					<h2>Higher Order Recipe:</h2>
+					<div>
+						Per person: 1 cup dried split peas, half a chopped onion, a stalk of celery, and a carrot.
+						Soak peas for 12 hours. Simmer for 2 hours in 4 cups of water (per person). Chop and add vegetables. Cook for 10 more minutes.
+					</div>
+					<br>
+					<h3 class="fragment">What's this approach?</h3>
+				</section>
 				
+				<section>
+					<h2>Abstraction!</h2>
+					<ul>
+						<li class="fragment">A large program is a costly program.</li>
+						<li class="fragment">Large size brings in complexity.</li>
+						<li class="fragment">It confuses programmers.</li>
+						<li class="fragment">It invites bugs that are hard to find.</li>
+						<li class="fragment">It's called Spaghetti Code.</li>
+						<li class="fragment">Abstraction helps avoid this Spaghetti.</li>
+					</ul> 
+				</section>
+
+				<section>
+					<img width="450" height="650" src="images/spaghetti.jpg" />
+				</section>
+
+				<section>
+					<h2>Abstracting array traversal:</h2>
+					<pre><code data-trim>
+var array = [1, 2, 3];
+
+for (var i = 0; i < array.length; i++) {
+  var current = array[i];
+  console.log(current);
+}
+
+//Abstract logEach:
+function logEach(array) {
+  for (var i = 0; i < array.length; i++)
+  console.log(array[i]);
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Passing action function to forEach:</h2>
+					<pre><code data-trim>
+function forEach(array , action) {
+  for (var i = 0; i < array.length; i++) {
+    action(array[i]);
+  }
+}
+
+forEach(["Log", "me", "in", "console"], console.log);
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Higher-order functions:</h2>
+					<ul>
+						<li class="fragment">Abstract/hide details to focus on problem at higher level.</li>
+						<li class="fragment">Follow Single Responsibility Principle.</li>
+						<li class="fragment">Operate on other functions ...</li>
+						<li class="fragment">by accepting them as arguments ...</li>
+						<li class="fragment">or by returning a new function.</li>
+					</ul>
+					<br><br>
+					<h3 class="fragment">What is this called?</h3> 
+				</section>
+
+				<section>
+					<h2>Composition:</h2>
+					<img width="600" height="550" src="images/composition.jpeg" />
+				</section>
+
+				<section>
+					<h2>Build things with precision:</h2>
+					<img width="600" height="550" src="images/watch.jpeg" />
+				</section>
+
+				<section>
+					<h3>Modules, Web Components => Lego Game</h3>
+					<img width="800" height="650" src="images/lego.jpg" />
+				</section>
+
+
+
+
+
+				
+	
+
+
+
+				
+	
 
 
 
