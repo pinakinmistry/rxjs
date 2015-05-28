@@ -455,8 +455,53 @@ Array.prototype.forEach = function(action) {
 
 				<section>
 					<h2>Coding Observable from Scratch:</h2>
-					Coming soon ...
+					<pre><code data-trim>
+function Observable(forEach) {
+  //An observable takes a forEach function as input
+  //and holds onto to it in internal _forEach property.
+  
+  this._forEach = forEach;
+}
+					</code></pre>
 				</section>
+
+				<section>
+					<h2>Adding forEach in Observable's API:</h2>
+					<pre><code data-trim>
+Observable.prototype.forEach = function(onNext, onError, onCompleted) {
+  //API for obser.forEach(onNext => ..., e => ..., c => ...)
+  if(typeof onNext === 'function') {
+    //create an observer object and assign the 3 argument functions to it
+    return this._forEach({
+      onNext: onNext,
+      onError: onError || function () {},
+      onCompleted: onCompleted || function () {}
+    });
+  } else {
+    //API for obser.forEach({onNext: x => ..., onError: e => ..., onCompleted: c => ...})
+    return this._forEach(onNext)
+  }
+};
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding map method:</h2>
+					<pre><code data-trim>
+Observable.prototype.map = function (transformationFunction) {
+  var self = this;
+  return new Observable(function forEach(observer) {
+    return self.forEach(
+      function onNext(event) { observer.onNext(transformationFunction(event)); },
+      function onError(event) { observer.onError(event); },
+      function onCompleted() { observer.onCompleted(); }
+    );
+  });
+};
+					</code></pre>
+				</section>
+
+				
 
 
 

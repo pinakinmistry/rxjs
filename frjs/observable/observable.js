@@ -1,5 +1,6 @@
 function Observable(forEach) {
-  //Internal definition of forEach on Observables that is passed in while creating an observable
+  //An observable takes a forEach function as input
+  //and holds onto to it in internal _forEach property.
   this._forEach = forEach;
 }
 
