@@ -23,3 +23,11 @@ ul .fragment {
 .reveal section img {
 	border: none;
 }
+
+.reveal pre code {
+	max-height: 700px; 
+}
+
+.reveal pre {
+	width: 95%;
+}

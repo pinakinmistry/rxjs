@@ -47,7 +47,23 @@
 				</section>
 
 				<section>
-					<h2><a href="https://twitter.com/PinakinMistry" target="_blank">@pinakinmistry</a></h2>
+					<h2>Notation Used:</h2>
+					<h1><i><b>$P</b></i> = <img class="fragment" width="600" height="200" src="images/perk.jpeg" /></h1>
+				</section>
+
+				<section>
+					<h2>Signs to be used:</h2>
+					<img width="652" height="330" src="images/like.png" />
+				</section>
+
+				<section>
+					<h2><a href="http://pinakinmistry.github.io/" target="_blank">@pinakinmistry</a></h2>
+					<h2><i><b>$P</b></i></h2>
+				</section>
+
+				<section>
+					<h2>@JSChannel 2014</h2>
+					<img src="images/jschannel.jpg" width="900" height="580" />
 				</section>
 
 				<section>
@@ -70,7 +86,7 @@
 
 				<section>
 					<h2>!loveAtFirstSight;</h2>
-					<h4 class="fragment">//Even I hated it initially!</h4>
+					<h4>//Even I hated it initially!</h4>
 				</section>
 
 				<section>
@@ -228,7 +244,12 @@ f.apply() 	//'Hello World'
 //$P
 f.prototype	//?
 f.arguments	//?
+//What's the other implicit argument to a function?
 					</code></pre>
+				</section>
+
+				<section>
+					<h2>What is this?</h2>
 				</section>
 
 				<section>
@@ -338,16 +359,16 @@ console.log(sum(range(1, 10)));
 						Soak peas for 12 hours. Simmer for 2 hours in 4 cups of water (per person). Chop and add vegetables. Cook for 10 more minutes.
 					</div>
 					<br>
-					<h3 class="fragment">What's this approach?</h3>
+					<h3 class="fragment">What's this approach? <i><b>$P</b></i></h3>
 				</section>
 				
 				<section>
 					<h2>Abstraction!</h2>
 					<ul>
 						<li class="fragment">A large program is a costly program.</li>
-						<li class="fragment">Large size brings in complexity.</li>
-						<li class="fragment">It confuses programmers.</li>
+						<li class="fragment">Difficult to read, understand & change.</li>
 						<li class="fragment">It invites bugs that are hard to find.</li>
+						<li class="fragment">Fixing a bug may give rise to more bugs.</li>
 						<li class="fragment">It's called Spaghetti Code.</li>
 						<li class="fragment">Abstraction helps avoid this Spaghetti.</li>
 					</ul> 
@@ -434,7 +455,7 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section>
-					<h2>Exercises</h2>
+					<h2>Exercises 1 - 20</h2>
 					<a target="_blank" href="http://jhusain.github.io/learnrx">@jhusain.github.io/learnrx</a>
 					<br>
 					Use Firefox v22+ for ES6 Arrow function
@@ -445,8 +466,6 @@ Array.prototype.forEach = function(action) {
 					<ul>
 						<li>Synchronous programming</li>
 						<li>Asynchronous programming</li>
-						<li>Procedural programming</li>
-						<li>Imperative programming</li>
 						<li>Functional programming</li>
 						<li>Functional Reactive programming</li>
 
@@ -468,17 +487,21 @@ function Observable(forEach) {
 				<section>
 					<h2>Adding forEach in Observable's API:</h2>
 					<pre><code data-trim>
-Observable.prototype.forEach = function(onNext, onError, onCompleted) {
-  //API for obser.forEach(onNext => ..., e => ..., c => ...)
+Observable.prototype.forEach = function (onNext, onError, onCompleted) {
+  //API for obserable.forEach(onNext => ..., e => ..., c => ...)
   if(typeof onNext === 'function') {
-    //create an observer object and assign the 3 argument functions to it
+    //create an observer object and assign
+    //the 3 argument functions to it
     return this._forEach({
       onNext: onNext,
       onError: onError || function () {},
       onCompleted: onCompleted || function () {}
     });
   } else {
-    //API for obser.forEach({onNext: x => ..., onError: e => ..., onCompleted: c => ...})
+    //API for obserable.forEach(
+    // {onNext: x => ...,
+    // onError: e => ...,
+    // onCompleted: c => ...})
     return this._forEach(onNext)
   }
 };
@@ -489,16 +512,138 @@ Observable.prototype.forEach = function(onNext, onError, onCompleted) {
 					<h2>Adding map method:</h2>
 					<pre><code data-trim>
 Observable.prototype.map = function (transformationFunction) {
+  //$P
   var self = this;
+
   return new Observable(function forEach(observer) {
     return self.forEach(
-      function onNext(event) { observer.onNext(transformationFunction(event)); },
-      function onError(event) { observer.onError(event); },
-      function onCompleted() { observer.onCompleted(); }
+      function onNext(event) {
+      	observer.onNext(transformationFunction(event));
+      },
+      function onError(event) {
+      	observer.onError(event);
+      },
+      function onCompleted() {
+      	observer.onCompleted();
+      }
     );
   });
 };
 					</code></pre>
+				</section>
+
+				<section>
+					<h2>self = thisDream || outerWorld;</h2>
+					<img src="images/totem.gif" width="900" height="500" />
+				</section>
+
+				<section>
+					<h2>Adding fromEvent method:</h2>
+					<pre><code data-trim>
+Observable.fromEvent = function(domElement, eventName) {
+  return new Observable(function forEach(observer) {
+    var handler = function(event) {
+      observer.onNext(event);
+    };
+
+    domElement.addEventListener(eventName, handler);
+
+    //Subcription object
+    return {
+      dispose: function () {
+        domElement.removeEventListener(eventName, handler);
+      }
+    };
+  });
+};
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Mouse clicks as observable:</h2>
+					<pre><code data-trim>
+var button = document.getElementById("button");
+
+var clicks =
+  Observable
+  .fromEvent(document, "mousemove")
+  .map(function (e) {
+      return e;
+    });
+
+console.log(clicks);
+
+clicks.forEach(function (e) {
+  console.log(e.pageX, e.pageY);
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>You need some &lt;html&gt; as well:</h2>
+					<pre><code data-trim>
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+  <button id="button">Click</button>
+  <script src="observable.js"></script>
+&lt;/body&gt;
+&lt;/html&gt;
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding filter method:</h2>
+					<pre><code data-trim>
+Observable.prototype.filter = function (testFunction) {
+  var self = this; //source observable
+    return new Observable(function forEach(observer) {
+      return self.forEach(
+        function onNext(event) {
+          if(testFunction(event)) {
+            observer.onNext(event);
+          }
+        },
+        function onError(event) { observer.onError(event); },
+        function onCompleted() { observer.onCompleted(); }
+      );
+    });
+  }
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding take method:</h2>
+					<pre><code data-trim>
+Observable.prototype.take = function (limitTo) {
+  var self = this;
+    return Observable(function forEach(observer) {
+      var counter = 0,
+        subcription = self.forEach(
+          function onNext(v) {
+            observer.onNext(v);
+            counter++;
+            if(counter === limitTo) {
+              observer.onCompleted();
+              subcription.dispose();
+            }
+          },
+          function onError(e) {
+            observer.onError(e);
+          },
+          function onCompleted() {
+            observer.onCompleted();
+          }
+        );
+      return subcription;
+    });
+  }
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>All The Best!!!!!</h2>
+					<img src="images/thumpsup.gif" width="900" height="600" />
 				</section>
 
 				
