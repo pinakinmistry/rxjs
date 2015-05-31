@@ -1,10 +1,14 @@
 - Exercise 2: Use forEach to print all the names in an array
 
-names.forEach(name => console.log(name));
+names.forEach(name =>
+	console.log(name)
+);
 
 - Exercise 3: Project an array of videos into an array of {id,title} pairs using forEach():
 
-newReleases.forEach(video => videoAndTitlePairs.push({id:video.id, title: video.title}));
+newReleases.forEach(video =>
+	videoAndTitlePairs.push({id:video.id, title: video.title})
+);
 console.log(videoAndTitlePairs);
 
 - Exercise 4: Implement map():

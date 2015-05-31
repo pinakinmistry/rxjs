@@ -31,3 +31,7 @@ ul .fragment {
 .reveal pre {
 	width: 95%;
 }
+
+.reveal .blue {
+	color: #42affa;
+}
