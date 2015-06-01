@@ -115,7 +115,9 @@
 					<h3>
 						likeJS
 						<span class="fragment"> || loveJS ?</span>
-						<span class="fragment">learnJS() : learnJS();</span> 
+						<span class="fragment">learnJS() : learnJS();</span>
+						<h4 class="fragment">//Short answer: JavaScript is Awesome!</h4>
+						<h4 class="fragment">//Long answer: Proving the short answer in this workshop.</h4>
 					</h3>
 				</section>
 
@@ -228,11 +230,11 @@
 				<section>
 					<h2>Slow Rise To The Top:</h2>
 					<ul>
-						<li class="fragment">1995: Most Despised language due to B#@!# War! <i><b>$P</b></i></li>
+						<li class="fragment">1995: Most Despised language due to B#@!# War! <i class="blue">$P</i></li>
 						<li class="fragment">2004: Gmail AJAXed us!</li>
-						<li class="fragment">2006: jQuery's here for rescue! <i><b>$P</b></i></li>
+						<li class="fragment">2006: jQuery's here for rescue! <i class="blue">$P</i></li>
 						<li class="fragment">2008: JavaScript Good Parts Book. Discovery of Decade!</li>
-						<li class="fragment">2009: JavaScript Jumped off Browser! <i><b>$P</b></i></li>
+						<li class="fragment">2009: JavaScript Jumped off Browser! <i class="blue">$P</i></li>
 						<li class="fragment">2010: No Flash on iPhone/iPad; Go HTML5 Way!</li>
 						<li class="fragment">2010: Beginnings of Modern JavaScript library Ecosystem!</li>
 						<li class="fragment">2011: Javascript a first-class citizen in Windows 8!</li>
@@ -271,7 +273,7 @@
 				</section>
 
 				<section>
-					<h2>JS functions are first class citizens.</h2>
+					<h2>JS functions are first class citizens. <i class="blue">$P</i></h2>
 				</section>
 
 				<section>
@@ -297,8 +299,12 @@ f.arguments	//?
 				</section>
 
 				<section>
-					<h2>What is this?</h2>
+					<video width="900" height="600" controls>
+				    	<source data-src="images/whatisthis-bigger.mkv" type="video/mp4" />
+				  	</video>
+				  	<h2 class="fragment">What is this? <i class="blue">$P</i></h2>
 				</section>
+
 
 				<section>
 					<h2>Array object methods:</h2>
@@ -407,7 +413,7 @@ console.log(sum(range(1, 10)));
 						Soak peas for 12 hours. Simmer for 2 hours in 4 cups of water (per person). Chop and add vegetables. Cook for 10 more minutes.
 					</div>
 					<br>
-					<h3 class="fragment">What's this approach? <i><b>$P</b></i></h3>
+					<h3 class="fragment">What's this approach? <i class="blue">$P</i></h3>
 				</section>
 				
 				<section>
@@ -431,6 +437,7 @@ console.log(sum(range(1, 10)));
 					<pre><code data-trim>
 var a = [1, 2, 3];
 
+//Procedural way:
 for (var i = 0; i < array.length; i++) {
   var current = array[i];
   console.log(current);
@@ -442,6 +449,7 @@ function logEach(array) {
   console.log(array[i]);
 }
 
+//So readable:
 logEach(a);	//1, 2, 3
 					</code></pre>
 				</section>
@@ -449,6 +457,7 @@ logEach(a);	//1, 2, 3
 				<section>
 					<h2>Passing action function to forEach:</h2>
 					<pre><code data-trim>
+//f(f(x)):
 Array.prototype.forEach = function(action) {
   for (var i = 0; i < this.length; i++) {
     action(this[i]);
@@ -478,7 +487,7 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section>
-					<h2>Build things with components:</h2>
+					<h3>Build things with functional components:</h3>
 					<img width="600" height="550" src="images/watch.jpeg" />
 				</section>
 
@@ -510,14 +519,18 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section>
-					<h2>What's the difference between:</h2>
+					<h2>Reactive Functional Programming using RxJS:</h2>
 					<ul>
-						<li>Synchronous programming</li>
-						<li>Asynchronous programming</li>
-						<li>Functional programming</li>
-						<li>Functional Reactive programming</li>
-
+						<li class="fragment">Observable = Collection over time</li>
+						<li class="fragment">Treat multiple asynchronous data/events as collections</li>
+						<li class="fragment">Handle them using forEach, map, filter, concatAll, etc.</li>
+						<li class="fragment">Elegant way of writing asynchronous programming</li>
 					</ul>
+				</section>
+
+				<section>
+					<h2>Exercises 27 - 40</h2>
+					<a target="_blank" href="http://jhusain.github.io/learnrx">@jhusain.github.io/learnrx</a>
 				</section>
 
 				<section>
