@@ -95,7 +95,7 @@ var button = document.getElementById("button");
 
 var clicks =
   Observable.
-    fromEvent(document, "mousemove").
+    fromEvent(button, "click").
     map(function (e) {
       return e;
     });

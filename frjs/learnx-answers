@@ -203,7 +203,6 @@ console.log(result);
 
 
 
-Observable = Collection over time.
 clicks = Observable.forEvent(button, 'click');
 //Converts stream of simple event objects to array of observable objectss
 
@@ -224,6 +223,10 @@ function(button) {
 }
 
 - Exercise 29: Traversing an Event
+Subscribing to an event is similar to traversing an array.
+Array traversal is synchronous and completes.
+Event traversal is asynchronous and never completes.
+If we convert a button click Event to an Observable object, we can use forEach() to traverse the Event.
 
 function(button) {
 	var buttonClicks = Observable.fromEvent(button, "click");
@@ -239,9 +242,67 @@ function(button) {
 			});
 }
 
+Disposing of a subscription is the asynchronous equivalent of stopping half-way through a counting for loop.
+Calling dispose() is same as calling removeEventListener().
+It prevents memory leaks.
+
+If we convert Events to Observable Objects, we can use powerful functions to transform them.
+
 - Exercise 30: Completing Sequences with take()
 
+Listen for the next occurrence of an event and then immediately unsubscribe.
+For example: window.onload()
+Failing to unsubscribe is a memory leak.
+Memory leaks can seriously destablize your application and can be very difficult to track down.
+The take() function creates a new sequence that completes after a discrete number of items arrive.
+Unlike an Event, when an Observable sequence completes it unsubscribes all of its listeners.
+
+function(button) {
+	var buttonClicks = Observable.fromEvent(button, "click");
+
+	// Use take() to listen for only one button click
+	// and unsubscribe.
+	buttonClicks.
+		take(1).
+		forEach(function(priceRecord) {
+			alert("Button was clicked once. Stopping Traversal.");
+		});
+}
+
+Lot like for loop with a pre defined count of data items to be processed.
+
 - Exercise 31: Completing sequences with takeUntil()
+
+function(pricesNASDAQ, printRecord, stopButton) {
+	var stopButtonClicks = Observable.fromEvent(stopButton,"click"),
+		microsoftPrices =
+			pricesNASDAQ.
+				filter(function(priceRecord) {
+					return priceRecord.name === "MSFT";
+				}).
+				takeUntil(stopButtonClicks);
+
+	microsoftPrices.
+		forEach(function(priceRecord) {
+			printRecord(priceRecord);
+		});
+}
+
+Querying Observables
+
+What's the difference between these two tasks?
+
+    Creating a flat list of movies with a rating of 5.0 from a bunch of movie lists.
+    Creating a sequence of all the mouse drag events from the mouseDown, mouseMove, and mouseUp events.
+
+The difference between traversing an Array and traversing an Observable is the direction in which the data moves.
+When traversing an Array, the client pulls data from the data source, blocking until it gets a result.
+When traversing Observables, the data source pushes data at the client whenever it arrives. 
+If we filter an Array, we get a new Array. If we filiter an Observable, we get a new Observable.
+
+
+If you avoid indexers and stick to the functions you've learned in this tutorial, you'll have a unified programming model for transforming any collection. Having a unified programming model makes it trivial to convert synchronous code to asynchronous code, a process which would otherwise be very difficult.
+
 
 - Exercise 32: Creating a mouse drag event
 
@@ -368,6 +429,9 @@ function(window, $, showMovieLists, showError) {
 			error: errorHandler
 		});
 }
+
+Unfortunately no such support is available for asynchronous programs. 
+
 
 Converting callback-based APIs to Observables:
 

@@ -50,14 +50,14 @@
 					<h1><a href="http://jschannel.com" target="_blank">JSChannel</a></h1>
 				</section>
 
-				<section>
-					<h2>@JSChannel Conference 2014</h2>
-					<img src="images/jschannel.jpg" width="900" height="580" />
+				<section> 
+					<h2>Discount code just for you all:</h2>
+					<h3 class="blue"></h3>
 				</section>
 
 				<section>
-					<h2>Discount code just for you all:</h2>
-					<h3 class="blue"></h3>
+					<h2>@JSChannel Conference 2014</h2>
+					<img src="images/jschannel.jpg" width="900" height="560" />
 				</section>
 
 				<section>
@@ -85,7 +85,7 @@
 				</section>
 
 				<section>
-					<h2>!(in RTO && aTrafficPolice);</h2>
+					<h2>!(in RTO || aTrafficPolice);</h2>
 				</section>
 
 				<section>
@@ -218,7 +218,7 @@
 				</section>
 
 				<section>
-					<h2>Questions: <i><b>$P</b></i></h2>
+					<h2>Questions: <i class="blue">$P</i></h2>
 					<ul>
 						<li>Birth Year?</li>
 						<li>Birth Place?</li>
@@ -347,7 +347,7 @@ var b = [5, 6, 3, 1, 2, 7];
 var c = [6, 1, 3, 2];
 var d = [6, 8, 2, 1, 3];
 
-function findCommon(a, b) {
+function findCommon() {
   var common = [];
   
   a.forEach(//Write the logic here
@@ -429,7 +429,8 @@ console.log(sum(range(1, 10)));
 				</section>
 
 				<section>
-					<img width="450" height="650" src="images/spaghetti.jpg" />
+					<h2>Spaghetti leads to more Spaghetti!</h2>
+					<img width="450" height="550" src="images/spaghetti.jpg" />
 				</section>
 
 				<section>
@@ -519,17 +520,49 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section>
-					<h2>Reactive Functional Programming using RxJS:</h2>
+					<h2>Top rated Movies Collection:</h2>
+					<pre><code data-trim>
+//Collection of top rated movies for the given user						
+var getTopRatedFilms = user =>
+  user.videoLists
+    .map(videoList =>
+      videoList.videos
+        .filter(video => video.rating === 5.0))
+    .concatAll();
+
+getTopRatedFilms(user)
+  .forEach(film => console.log(film));
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Mouse Drags Collection:</h2>
+					<pre><code data-trim>
+//Collection of mouse drag events for the given element
+var getElementDrags = elmt =>
+  elmt.mouseDowns
+    .map(mouseDown =>
+      document.mouseMoves
+        .takeUntil(document.mouseUps))
+    .concatAll();
+
+getElementDrags(image)
+  .forEach(pos => image.position = pos);
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Reactive Functional Programming using Observable:</h2>
 					<ul>
 						<li class="fragment">Observable = Collection over time</li>
-						<li class="fragment">Treat multiple asynchronous data/events as collections</li>
+						<li class="fragment">Treat multiple asynchronous data/events as Collection</li>
 						<li class="fragment">Handle them using forEach, map, filter, concatAll, etc.</li>
 						<li class="fragment">Elegant way of writing asynchronous programming</li>
 					</ul>
 				</section>
 
 				<section>
-					<h2>Exercises 27 - 40</h2>
+					<h2>Exercises 27 - 36</h2>
 					<a target="_blank" href="http://jhusain.github.io/learnrx">@jhusain.github.io/learnrx</a>
 				</section>
 
@@ -627,7 +660,7 @@ var button = document.getElementById("button");
 
 var clicks =
   Observable
-  .fromEvent(document, "mousemove")
+  .fromEvent(button, "click")
   .map(function (e) {
       return e;
     });

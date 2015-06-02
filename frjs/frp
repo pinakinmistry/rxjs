@@ -69,6 +69,41 @@ y = f(x)
 y = f(f(x))
 
 
+Observables:
+Observable = Collection over time.
+It is lot like an event.
+it is a sequence of values that a data producer pushes to the consumer.
+It can signal to a listener that it has completed, and will send no more data.
+It can send data to consumers asynchronously.
+
+
+// An array of numbers 1,2,3
+var numbers123Array =      [1,2,3];
+
+// A sequence that returns 1, and then after 4 seconds returns 2,
+// and then after another second returns 3, and then completes.
+var numbers123Observable = seq([1,,,,,,,,,,,,2,,,3]);
+
+// Like Arrays, Observables can contain any object - even Arrays.
+var observableOfArrays = seq([ [1,2,3],,,,,,[4,5,6],,,,,,,,,,,[1,2] ])
+
+
+
+It can go on sending data to a listener forever.
+
+// The trailing ,,, ensures that the sequence will not complete.
+var mouseMovesObservable =
+    seq([ {x: 23, y: 55},,,,,,,{x: 44, y: 99},,,{x:55,y:99},,,{x: 54, y:543},,, ]);
+
+// No trailing ,,, indicates that sequence will complete.
+var numbers123Observable = seq([1,,,2,,,3]);
+
+Querying Observables allows us to create data sets that react and update over time.
+This type of programming is reactive programming.
+
+
+
+
 
 
 
