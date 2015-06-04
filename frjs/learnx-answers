@@ -504,7 +504,7 @@ function(window, getJSON, showMovieLists, showError) {
 										});
 								}
 								else {
-									return Observable.returnValue(undefined);
+									return Observable.returnValue('');
 								}
 							}),
 						getJSON("http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/movieLists"),

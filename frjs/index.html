@@ -43,16 +43,31 @@
 			<div class="slides">
 				<section>
 					<h2>Functional Reactive JavaScript</h2>
-					<h3 class="blue">- Workshop @JSChannel</h3>
+					<h2 class="blue">- Workshop @JSChannel</h2>
+					<br>
+					<h3>Prerequisites:</h3>
+					<ul class="blue">
+						<li>Firefox v22+ for ES6 => function</li>
+						<li>Firebug</li>
+						<li>Any text editor</li>
+					</ul>
+
 				</section>
 
 				<section>
-					<h1><a href="http://jschannel.com" target="_blank">JSChannel</a></h1>
+					<h1><a href="http://jschannel.com" target="_blank">Welcome to JSChannel</a></h1>
+					<ul>
+						<li>Since 2013</li>
+						<li>25+ Meetups</li>
+						<li>3 Conferences</li>
+						<li>Next conference on 17 - 18 July, 2015</li>
+						<li>Sole member of JSConf family in India</li>
+					</ul>
 				</section>
 
 				<section> 
 					<h2>Discount code just for you all:</h2>
-					<h3 class="blue"></h3>
+					<h3 class="blue">JSC-MUM</h3>
 				</section>
 
 				<section>
@@ -189,6 +204,7 @@
 					</ul> 
 				</section>
 
+				<!-- 
 				<section>
 					<h2>Sayin ain't enough!</h2>
 				</section>
@@ -204,7 +220,7 @@
 					</h2>
 				</section>
 
-				<!-- <section>
+				<section>
 					<h2><a href="http://lightning.fm/massofplanets/#/" target="_blank">
 						Mass of Planets</a>
 					</h2>
@@ -245,7 +261,7 @@
 				</section>
 
 				<section>
-					<h2>Present: Shower of JavaScript:</h2>
+					<h2>Present: Shower of JavaScript!</h2>
 					<ul>
 						<li>BackboneJS</li>
 						<li>EmberJS</li>
@@ -419,12 +435,12 @@ console.log(sum(range(1, 10)));
 				<section>
 					<h2>Abstraction!</h2>
 					<ul>
-						<li class="fragment">A large program is a costly program.</li>
-						<li class="fragment">Difficult to read, understand & change.</li>
-						<li class="fragment">It invites bugs that are hard to find.</li>
-						<li class="fragment">Fixing a bug may give rise to more bugs.</li>
-						<li class="fragment">It's called Spaghetti Code.</li>
-						<li class="fragment">Abstraction helps avoid this Spaghetti.</li>
+						<li>A large program is costly.</li>
+						<li>Difficult to read, understand & change.</li>
+						<li>It invites bugs that are hard to find.</li>
+						<li>Fixing a bug may give rise to more bugs.</li>
+						<li>It's called Spaghetti Code.</li>
+						<li>Abstraction helps avoid this Spaghetti.</li>
 					</ul> 
 				</section>
 
@@ -458,13 +474,13 @@ logEach(a);	//1, 2, 3
 				<section>
 					<h2>Passing action function to forEach:</h2>
 					<pre><code data-trim>
-//f(f(x)):
 Array.prototype.forEach = function(action) {
   for (var i = 0; i < this.length; i++) {
     action(this[i]);
   }
 };
 
+//f(f(x)):
 ["Log", "me", "in", "console"].forEach(console.log);
 					</code></pre>
 				</section>
@@ -472,11 +488,11 @@ Array.prototype.forEach = function(action) {
 				<section>
 					<h2>Higher-order functions:</h2>
 					<ul>
-						<li class="fragment">Abstract/hide details to focus on problem at higher level.</li>
-						<li class="fragment">Follow Single Responsibility Principle.</li>
-						<li class="fragment">Operate on other functions ...</li>
-						<li class="fragment">by accepting them as arguments ...</li>
-						<li class="fragment">or by returning a new function.</li>
+						<li>Abstract/hide details to focus on problem at higher level.</li>
+						<li>Follow Single Responsibility Principle.</li>
+						<li>Operate on other functions ...</li>
+						<li>by accepting them as arguments ...</li>
+						<li>or by returning a new function.</li>
 					</ul>
 					<br><br>
 					<h3 class="fragment">What is this called?</h3> 
@@ -493,7 +509,7 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section>
-					<h2>Like building blocks in Lego:</h2>
+					<h2>Like building blocks:</h2>
 					<img width="600" height="550" src="images/lego-components.jpg" />
 				</section>
 
@@ -503,13 +519,16 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section data-transition="fade">
-					<h3>ES6 Arrow Function =></h3>
+					<h3>Function in ES5</h3>
 					f = function (x) { return x + 1; }
-				</section>
-
-				<section data-transition="fade">
-					<h3>ES6 Arrow Function =></h3>
-					f = x => x + 1
+					<span class="fragment">
+						<h3 class="blue">Changes to:</h3>
+						f = x => x + 1
+						<h3 class="blue">in ES6</h3>
+						<h3>$P</h3>
+						<h3 class="fragment">What is this called?</h3>
+					</span>
+					
 				</section>
 
 				<section>
@@ -522,7 +541,6 @@ Array.prototype.forEach = function(action) {
 				<section>
 					<h2>Top rated Movies Collection:</h2>
 					<pre><code data-trim>
-//Collection of top rated movies for the given user						
 var getTopRatedFilms = user =>
   user.videoLists
     .map(videoList =>
@@ -538,7 +556,6 @@ getTopRatedFilms(user)
 				<section>
 					<h2>Mouse Drags Collection:</h2>
 					<pre><code data-trim>
-//Collection of mouse drag events for the given element
 var getElementDrags = elmt =>
   elmt.mouseDowns
     .map(mouseDown =>
@@ -632,61 +649,6 @@ Observable.prototype.map = function (transformationFunction) {
 				</section>
 
 				<section>
-					<h2>Adding fromEvent method:</h2>
-					<pre><code data-trim>
-Observable.fromEvent = function(domElement, eventName) {
-  return new Observable(function forEach(observer) {
-    var handler = function(event) {
-      observer.onNext(event);
-    };
-
-    domElement.addEventListener(eventName, handler);
-
-    //Subcription object
-    return {
-      dispose: function () {
-        domElement.removeEventListener(eventName, handler);
-      }
-    };
-  });
-};
-					</code></pre>
-				</section>
-
-				<section>
-					<h2>Mouse clicks as observable:</h2>
-					<pre><code data-trim>
-var button = document.getElementById("button");
-
-var clicks =
-  Observable
-  .fromEvent(button, "click")
-  .map(function (e) {
-      return e;
-    });
-
-console.log(clicks);
-
-clicks.forEach(function (e) {
-  console.log(e.pageX, e.pageY);
-});
-					</code></pre>
-				</section>
-
-				<section>
-					<h2>You need some &lt;html&gt; as well:</h2>
-					<pre><code data-trim>
-&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
-&lt;body&gt;
-  <button id="button">Click</button>
-  <script src="observable.js"></script>
-&lt;/body&gt;
-&lt;/html&gt;
-					</code></pre>
-				</section>
-
-				<section>
 					<h2>Adding filter method:</h2>
 					<pre><code data-trim>
 Observable.prototype.filter = function (testFunction) {
@@ -736,9 +698,68 @@ Observable.prototype.take = function (limitTo) {
 				</section>
 
 				<section>
-					<h2>All The Best!!!!!</h2>
-					<img src="images/thumpsup.gif" width="900" height="600" />
+					<h2>Adding fromEvent method:</h2>
+					<pre><code data-trim>
+Observable.fromEvent = function(domElement, eventName) {
+  return new Observable(function forEach(observer) {
+    var handler = function(event) {
+      observer.onNext(event);
+    };
+
+    domElement.addEventListener(eventName, handler);
+
+    //Subcription object
+    return {
+      dispose: function () {
+        domElement.removeEventListener(eventName, handler);
+      }
+    };
+  });
+};
+					</code></pre>
 				</section>
+
+				<section>
+					<h2>Mouse clicks as observable:</h2>
+					<pre><code data-trim>
+var button = document.getElementById("button");
+
+var clicks =
+  Observable
+  .fromEvent(button, "click")
+  .map(function (e) {
+      return e;
+    });
+
+console.log(clicks);
+
+clicks.forEach(function (e) {
+  console.log(e.pageX, e.pageY);
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>You need some &lt;html&gt; as well:</h2>
+					<pre><code data-trim>
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+  <button id="button">Click me and get x and y coordinates</button>
+  <script src="observable.js"></script>
+&lt;/body&gt;
+&lt;/html&gt;
+					</code></pre>
+				</section>
+
+				
+
+				<section>
+					<h2>See you again in 3 weeks. Code Best!</h2>
+					<img src="images/thumpsup.gif" width="800" height="600" />
+				</section>
+
+				
 
 				
 

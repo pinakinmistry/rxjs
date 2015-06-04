@@ -8,16 +8,17 @@ Observable.prototype = {
   //External/API definition of forEach that handle the below 2 variations for forEaching over observables
   //ensuring that we always forEach over an observable
   forEach: function(onNext, onError, onCompleted) {
-    //API for obser.forEach(onNext => ..., e => ..., c => ...)
+    //API for observable.forEach(onNext => ..., e => ..., c => ...)
     if(typeof onNext === 'function') {
       //create an observer object and assign the 3 argument functions to it
+      console.log('first variety', onNext);
       return this._forEach({
         onNext: onNext,
         onError: onError || function () {},
         onCompleted: onCompleted || function () {}
       });
     } else {
-      //API for obser.forEach({onNext: x => ..., onError: e => ..., onCompleted: c => ...})
+      //API for observable.forEach({onNext: x => ..., onError: e => ..., onCompleted: c => ...})
       //onNext = {onNext: x => ..., onError: e => ..., onCompleted: c => ...}
       return this._forEach(onNext)
     }
