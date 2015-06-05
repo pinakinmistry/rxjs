@@ -66,7 +66,7 @@
 				</section>
 
 				<section> 
-					<h2>Discount code just for you all:</h2>
+					<h2>Discount code for you all:</h2>
 					<h3 class="blue">JSC-MUM</h3>
 				</section>
 
@@ -228,7 +228,7 @@
 				
 
 				<section>
-					<h2>Why JavaScript's #1?</h2>
+					<h2>How come JavaScript's #1?</h2>
 					<h1 class="fragment">How come JavaScript?</h1>
 					<h4 class="fragment">Come on, I thought it's Java/C#/Ruby/...</h4>
 				</section>
@@ -247,7 +247,7 @@
 					<h2>Slow Rise To The Top:</h2>
 					<ul>
 						<li class="fragment">1995: Most Despised language due to B#@!# War! <i class="blue">$P</i></li>
-						<li class="fragment">2004: Gmail AJAXed us! <i class="blue">$P</i></li>
+						<li class="fragment">2004: Gmail AJAXed us!</li>
 						<li class="fragment">2006: jQuery's here for rescue! <i class="blue">$P</i></li>
 						<li class="fragment">2008: JavaScript Good Parts Book. Discovery of Decade!</li>
 						<li class="fragment">2009: JavaScript Jumped off Browser! <i class="blue">$P</i></li>
@@ -263,11 +263,11 @@
 				<section>
 					<h2>Present: Shower of JavaScript!</h2>
 					<ul>
-						<li>BackboneJS</li>
-						<li>EmberJS</li>
 						<li>AngularJS</li>
 						<li>ReactJS</li>
 						<li>Aurelia</li>
+						<li>EmberJS</li>
+						<li>BackboneJS</li>
 						<li>BatmanJS</li>
 						<li>PhantomJS</li>
 						<li>NodeJS / ioJS</li>
@@ -299,15 +299,17 @@ function f() {
   return 'Hello World';
 }
 //or
-var f = function () {
+var f = function f() {
   return 'Hello World';	
 };
 
+f();		//'Hello World'
+
 //Function being an object has properties and methods in it:
 f.name 		//f
+//$P
 f.call() 	//'Hello World'
 f.apply() 	//'Hello World'
-//$P
 f.prototype	//?
 f.arguments	//?
 //What's the other implicit argument to a function?
@@ -486,8 +488,8 @@ Array.prototype.forEach = function(action) {
 				</section>
 
 				<section>
-					<h2>Higher-order functions:</h2>
-					<ul>
+					<h2>Higher Order Functions?</h2>
+					<ul class=fragment>
 						<li>Abstract/hide details to focus on problem at higher level.</li>
 						<li>Follow Single Responsibility Principle.</li>
 						<li>Operate on other functions ...</li>
@@ -536,6 +538,13 @@ Array.prototype.forEach = function(action) {
 					<a target="_blank" href="http://jhusain.github.io/learnrx">@jhusain.github.io/learnrx</a>
 					<br>
 					Use Firefox v22+ for ES6 Arrow function
+				</section>
+
+				<section>
+					<h2>Let's get reactive using</h2>
+					<h1 class="blue">Observable from RxJS</h1>
+					
+
 				</section>
 
 				<section>
@@ -599,7 +608,7 @@ function Observable(forEach) {
 					<h2>Adding forEach in Observable's API:</h2>
 					<pre><code data-trim>
 Observable.prototype.forEach = function (onNext, onError, onCompleted) {
-  //API for obserable.forEach(onNext => ..., e => ..., c => ...)
+  //API for observable.forEach(onNext => ..., e => ..., c => ...)
   if(typeof onNext === 'function') {
     //create an observer object and assign
     //the 3 argument functions to it
@@ -609,7 +618,7 @@ Observable.prototype.forEach = function (onNext, onError, onCompleted) {
       onCompleted: onCompleted || function () {}
     });
   } else {
-    //API for obserable.forEach(
+    //API for observable.forEach(
     // {onNext: x => ...,
     // onError: e => ...,
     // onCompleted: c => ...})
@@ -653,18 +662,18 @@ Observable.prototype.map = function (transformationFunction) {
 					<pre><code data-trim>
 Observable.prototype.filter = function (testFunction) {
   var self = this; //source observable
-    return new Observable(function forEach(observer) {
-      return self.forEach(
-        function onNext(event) {
-          if(testFunction(event)) {
-            observer.onNext(event);
-          }
-        },
-        function onError(event) { observer.onError(event); },
-        function onCompleted() { observer.onCompleted(); }
-      );
-    });
-  }
+  return new Observable(function forEach(observer) {
+    return self.forEach(
+      function onNext(event) {
+        if(testFunction(event)) {
+          observer.onNext(event);
+        }
+      },
+      function onError(event) { observer.onError(event); },
+      function onCompleted() { observer.onCompleted(); }
+    );
+  });
+ };
 					</code></pre>
 				</section>
 
@@ -673,27 +682,27 @@ Observable.prototype.filter = function (testFunction) {
 					<pre><code data-trim>
 Observable.prototype.take = function (limitTo) {
   var self = this;
-    return Observable(function forEach(observer) {
-      var counter = 0,
-        subcription = self.forEach(
-          function onNext(v) {
-            observer.onNext(v);
-            counter++;
-            if(counter === limitTo) {
-              observer.onCompleted();
-              subcription.dispose();
-            }
-          },
-          function onError(e) {
-            observer.onError(e);
-          },
-          function onCompleted() {
-            observer.onCompleted();
-          }
-        );
-      return subcription;
-    });
-  }
+  return Observable(function forEach(observer) {
+    var counter = 0,
+    subcription = self.forEach(
+      function onNext(v) {
+        observer.onNext(v);
+        counter++;
+        if(counter === limitTo) {
+          observer.onCompleted();
+          subcription.dispose();
+        }
+      },
+      function onError(e) {
+        observer.onError(e);
+      },
+      function onCompleted() {
+        observer.onCompleted();
+      }
+    );
+    return subcription;
+  });
+};
 					</code></pre>
 				</section>
 
@@ -752,10 +761,24 @@ clicks.forEach(function (e) {
 					</code></pre>
 				</section>
 
-				
+				<section>
+					<h2>Advantages of f(r(JS)):</h2>
+					<ul>
+						<li class="fragment">Same code for Sync and Async data stream</li>
+						<li class="fragment">With power of higher order collection functions</li>
+						<li class="fragment">No events/promises based Spaghetti code</li>
+						<li class="fragment">Simple subscribe and unsubscribe logic</li>
+						<li class="fragment">Can stop an onging Async operation anytime</li>
+					</ul>
+				</section>
 
 				<section>
-					<h2>See you again in 3 weeks. Code Best!</h2>
+					<h2>Say no to for(;;)</h2>
+					<h1 class="blue fragment">Say yes to f(r(JS)); -)</h2>
+				</section>
+
+				<section>
+					<h2>See you again in 4 weeks. Code Best!</h2>
 					<img src="images/thumpsup.gif" width="800" height="600" />
 				</section>
 
