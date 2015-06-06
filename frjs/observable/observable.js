@@ -11,7 +11,6 @@ Observable.prototype = {
     //API for observable.forEach(onNext => ..., e => ..., c => ...)
     if(typeof onNext === 'function') {
       //create an observer object and assign the 3 argument functions to it
-      console.log('first variety', onNext);
       return this._forEach({
         onNext: onNext,
         onError: onError || function () {},
