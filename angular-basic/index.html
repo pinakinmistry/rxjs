@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>ng-basic Workshop</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<link rel="stylesheet" href="css/override.css">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>Workshop on AngularJS Basics</h2>
+					<h2 class="blue">@ JSChannel</h2>
+					<br>
+					<h3>Prerequisites:</h3>
+					<ul class="blue">
+						<li>Chrome/Firefox + Firebug</li>
+						<li>Node</li>
+						<li>terminal/gitbash</li>
+						<li>Any text editor</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1 class="blue">ng-me</h1>
+					<h3 class="fragment">//angularize me</h3>
+
+				</section>
+
+				<section>
+					<h2>Notation Used in these slides:</h2>
+					<h1><i><b class="blue">$P</b></i></h2>
+						<span class="fragment">
+							<img width="600" height="200" src="images/perk.jpeg" />
+							<h2>Get Perks for right answers.</h2>
+						</span>
+
+					</h1>
+				</section>
+
+				<section>
+					<h2><a href="https://www.google.co.in/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=angular" target="_blank">What is AngularJS?</a></h2>
+					<ul>
+						<li>Superheroic JavaScript MVW Framework.</li>
+						<li>What HTML would have been, had it been designed for building web-apps.</li>
+						<li class="fragment">A client side framework for building dynamic web apps.</li>
+						<li class="fragment">Extends HTML with new syntax/construct called directives (ng-some-directive).</li>
+						<li class="fragment">Sprinkle some ng-* and see Angular's magic.</li>
+					</ul>
+				</section>
+
+				<section> 
+					<h1>HTML++</h1>
+				</section>
+
+				<section>
+					<h2 class="blue">How it all started?</h2>
+					<ul>
+						<li>Google Feedback Project in 2009.</li>
+						<li>18,000+ lines of client side code base in 6 months.</li>
+						<li>Misko Hevery challenged to rewrite it in 2 weeks.</li>
+						<li>He failed.</li>
+						<li class="fragment">He succeeded in 3 weeks.</li>
+						<li class="fragment">Code base came down to 1500 lines.</li>
+						<li class="fragment">Yay, Superheroic it is!</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>ng-father = Misko Hevery</h2>
+					<img src="images/misko.jpg" width="460" height="600" />
+				</section>
+
+				<section>
+					<h2 class="blue">Why Angular?</h2>
+					<ul>
+						<li>Removes lot of complexity/boilerplate code.</li>
+						<li>Make common tasks trivial and difficult tasks possible.</li>
+						<li>Easy to learn.</li>
+						<li>Opinionated.</li>
+						<li>Driven by Google/Community.</li>
+						<li>Most in demand/popular client side framework.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 class="blue">Core Features:</h2>
+					<ul>
+						<li>Directives to extend HTML</li>
+						<li>2 way data binding</li>
+						<li>MVC, MVVM, MVW, MV*</li>
+						<li>Client side templating</li>
+						<li>Client side routing</li>
+						<li>Dependency Injection</li>
+						<li>Modular, Reusable, Testable Components</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 class="blue">Angular components:</h2>
+					<ul>
+						<li>Directives (ng-app, ng-controller, ng-repeat, ng-show, ng-hide, ng-view, ...)</li>
+						<li>Module</li>
+						<li>Controller</li>
+						<li>Scope</li>
+						<li>View</li>
+						<li>Model</li>
+						<li>Dependency Injection</li>
+						<li>Services vs Factory</li>
+						<li>Filters</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>The very first directive:</h2>
+					<h1 class="blue">ng-app</h1>
+				</section>
+				
+				<section>
+					<h2>Module:</h2>
+					<pre><code data-trim>
+//setter:
+angular.module('moduleName', []);
+
+//getter:
+angular.module('moduleName');
+					</code></pre>
+				</section>
+
+				
+
+				
+
+				<section>
+					<h2>You need some &lt;html&gt; as well:</h2>
+					<pre><code data-trim>
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+  <button id="button">Click me and get x and y coordinates</button>
+  <script src="observable.js"></script>
+&lt;/body&gt;
+&lt;/html&gt;
+					</code></pre>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
