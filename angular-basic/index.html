@@ -48,9 +48,10 @@
 					<h3>Prerequisites:</h3>
 					<ul class="blue">
 						<li>Chrome/Firefox + Firebug</li>
-						<li>Node</li>
-						<li>terminal/gitbash</li>
 						<li>Any text editor</li>
+						<li>Node - optional</li>
+						<li>terminal/gitbash - optional</li>
+						
 					</ul>
 				</section>
 
@@ -77,8 +78,8 @@
 						<li>Superheroic JavaScript MVW Framework.</li>
 						<li>What HTML would have been, had it been designed for building web-apps.</li>
 						<li class="fragment">A client side framework for building dynamic web apps.</li>
-						<li class="fragment">Extends HTML with new syntax/construct called directives (ng-some-directive).</li>
-						<li class="fragment">Sprinkle some ng-* and see Angular's magic.</li>
+						<li class="fragment">Extends HTML with new syntax/construct called <b>directives (ng-some-directive)</b>.</li>
+						<li class="fragment">Sprinkle some <b>ng-*</b> and see Angular's magic.</li>
 					</ul>
 				</section>
 
@@ -133,23 +134,28 @@
 					<h2 class="blue">Angular components:</h2>
 					<ul>
 						<li>Directives (ng-app, ng-controller, ng-repeat, ng-show, ng-hide, ng-view, ...)</li>
-						<li>Module</li>
-						<li>Controller</li>
-						<li>Scope</li>
+						<li>Module (angular.module())</li>
+						<li>Controller (ng-controller)</li>
+						<li>Model (ng-model)</li>
+						<li>Scope ($scope)</li>
+						<li>Dependency Injection of $scope</li>
+						<li>Angular expression ({{}})</li>
 						<li>View</li>
-						<li>Model</li>
-						<li>Dependency Injection</li>
-						<li>Services vs Factory</li>
-						<li>Filters</li>
+						<li>Filter (| filter)</li>
 					</ul>
 				</section>
 
 				<section>
-					<h2>The very first directive:</h2>
-					<h1 class="blue">ng-app</h1>
+					<h2>Let's build Todo App using</h2>
+					<h1 class="blue fragment">ng-app</h1>
+				</section>
+
+				<section>
+					<h2>Can you say this now?</h2>
+					<h1 class="blue">ng-me</h1>
 				</section>
 				
-				<section>
+				<!-- <section>
 					<h2>Module:</h2>
 					<pre><code data-trim>
 //setter:
@@ -158,24 +164,10 @@ angular.module('moduleName', []);
 //getter:
 angular.module('moduleName');
 					</code></pre>
-				</section>
+				</section> -->
 
 				
 
-				
-
-				<section>
-					<h2>You need some &lt;html&gt; as well:</h2>
-					<pre><code data-trim>
-&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
-&lt;body&gt;
-  <button id="button">Click me and get x and y coordinates</button>
-  <script src="observable.js"></script>
-&lt;/body&gt;
-&lt;/html&gt;
-					</code></pre>
-				</section>
 
 			</div>
 
