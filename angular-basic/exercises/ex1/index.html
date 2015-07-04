@@ -1,7 +1,7 @@
 <!doctype html>
 <html ng-app="todoApp">
 <head>
-	<title>ToDo App</title>
+	<title>My Todo Lists</title>
 	<link rel="stylesheet" href="todo.css">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
 	<script type="text/javascript" src="todo.js"></script>
@@ -10,24 +10,26 @@
 	<div class="wrapper">
 		<h2>My Todo Lists</h2>
 		<div ng-controller="TodoListController">
-			<div ng-repeat="todoBlock in todoBlocks">
-				<h3>{{todoBlock.title}}</h3>
+			<input type="text" placeholder="Search a todo list" ng-model="searchText"/>
+			<div ng-repeat="todoList in todoLists | filter: {title: searchText}">
+				<h3>{{todoList.title}}</h3>
+				<hr>
 				<b>Tasks remaining</b>
 				<ul>
-					<li ng-repeat="todo in todoBlock.todos | filter: {done: '!'}">
+					<li ng-repeat="todo in todoList.todos | filter: {done: false}">
 						<input type="checkbox" ng-model="todo.done"/>
 						<span ng-class="{'task-done': todo.done}">{{todo.text}}</span>
 					</li>
 				</ul>
 				<b>Tasks done</b>
 				<ul>
-					<li ng-repeat="todo in todoBlock.todos | filter: {done: true}">
+					<li ng-repeat="todo in todoList.todos | filter: {done: true}">
 						<input type="checkbox" ng-model="todo.done"/>
 						<span ng-class="{'task-done': todo.done}">{{todo.text}}</span>
 					</li>
 				</ul>
-				<form ng-submit="addTodoItem(todoBlock, $index)">
-					<input type="text" ng-model="todoBlock.todoText" />
+				<form ng-submit="addTodoItem(todoList, $index)">
+					<input type="text" ng-model="todoList.todoText" />
 					<button type="submit">Add</button>
 				</form>
 			</div>
