@@ -1,0 +1,594 @@
+- Exercise 2: Use forEach to print all the names in an array
+
+names.forEach(name =>
+	console.log(name)
+);
+
+- Exercise 3: Project an array of videos into an array of {id,title} pairs using forEach():
+
+newReleases.forEach(video =>
+	videoAndTitlePairs.push({id:video.id, title: video.title})
+);
+console.log(videoAndTitlePairs);
+
+- Exercise 4: Implement map():
+
+Array.prototype.map = function(projectionFunction) {
+	var results = [];
+	this.forEach(function(itemInArray) {
+		results.push(projectionFunction(itemInArray));
+	});
+	return results;
+};
+console.log(JSON.stringify([1,2,3].map(function(x) { return x + 1; })))
+
+
+Array.prototype.map = (projectionFunction) => {
+	var results = [];
+	this.forEach(function(itemInArray) {
+		results.push(projectionFunction(itemInArray));
+	});
+	return results;
+};
+//this.forEach is undefined bcos this is lexically bound to enclosing scope which is window object in this case.
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+
+- Exercise 5: Use map() to project an array of videos into an array of {id,title} pairs
+
+console.log(newReleases.map(video => {
+	return {id: video.id, title: video.title};
+}));
+
+- Exercise 6: Use forEach() to collect only those videos with a rating of 5.0
+
+newReleases.forEach(function(video) {
+	if (video.rating === 5.0) {
+		videos.push(video);
+	}
+});
+console.log(videos);
+
+- Exercise 7: Implement filter()
+
+Array.prototype.filter = function(predicateFunction) {
+	var results = [];
+	this.forEach(function(itemInArray) {
+	  if (predicateFunction(itemInArray)) {
+		results.push(itemInArray);
+	  }
+	});
+
+	return results;
+};
+console.log(JSON.stringify([1,2,3].filter(function(x) { return x > 2})))
+
+Exercise 8: Chain filter and map to collect the ids of videos that have a rating of 5.0
+
+console.log(newReleases.
+	filter(video => video.rating === 5.0).
+	map(video => video.id)
+);
+
+- Exercise 9: Flatten the movieLists array into an array of video ids
+
+movieLists.forEach(function(movieList) {
+	movieList.videos.forEach(function(video) {
+		allVideoIdsInMovieLists.push(video.id);
+	});
+});
+console.log(allVideoIdsInMovieLists);
+
+- Exercise 10: Implement concatAll()
+
+Array.prototype.concatAll = function() {
+	var results = [];
+	this.forEach(function(subArray) {
+		results.push.apply(results, subArray);
+	});
+
+	return results;
+};
+
+console.log(JSON.stringify([ [1,2,3], [4,5,6], [7,8,9] ].concatAll()));
+
+- Exercise 11: Use map() and concatAll() to project and flatten the movieLists into an array of video ids
+
+console.log(movieLists.
+  map(movieList =>
+    movieList.videos.map(video => video.id)).
+  concatAll()
+);
+
+- Exercise 12: Retrieve id, title, and a 150x200 box art url for every video
+
+var result = movieLists.map(movieList => 
+    movieList.videos.map(video => 
+    	video.boxarts.filter(boxart =>
+    		boxart.width === 150 && boxart.height === 200
+    	).map(boxart => {
+    		return {
+    			id: video.id,
+    			title: video.title,
+    			boxart: boxart.url
+    		};
+    	})
+    ).concatAll()
+  ).concatAll();
+
+console.log(result);
+
+- Exercise 13: Implement concatMap()
+
+Array.prototype.concatMap = function(projectionFunctionThatReturnsArray) {
+	return this.
+		map(function(item) {
+			return projectionFunctionThatReturnsArray(item);
+		}).
+		// apply the concatAll function to flatten the two-dimensional array
+		concatAll();
+};
+
+- Exercise 14: Use concatMap() to retrieve id, title, and 150x200 box art url for every video
+
+var result = movieLists.concatMap(movieList => 
+    movieList.videos.concatMap(video => 
+    	video.boxarts.filter(boxart =>
+    		boxart.width === 150 && boxart.height === 200
+    	).map(boxart => {
+    		return {
+    			id: video.id,
+    			title: video.title,
+    			boxart: boxart.url
+    		};
+    	})
+    )
+  );
+
+console.log(result);
+
+map - Transformation
+filter - filtering
+concatAll - n dimensions to n - 1 dimensions
+concatMap = map() + concatAll()
+reduce - find/search
+
+- Exercise 15: Use forEach to find the largest box art
+
+var result = boxarts.reduce((current, next) => current.width * current.height > next.width * next.height ? current : next);
+console.log(result);
+
+- Exercise 16: Implement reduce()
+...
+
+- Exercise 17: Retrieve the largest rating.
+
+var result = ratings.reduce((current, next) => current > next ? current : next);
+console.log(result);
+
+- Exercise 18: Retrieve url of the largest boxart
+
+var result = boxarts.reduce((current, next) =>
+	current.width * current.height > next.width * next.height ? current : next
+  )
+  .map(boxart => boxart.url);
+
+console.log(result);
+
+- Exercise 19: Reducing with an initial value
+
+var result = videos.reduce((obj, next) => {
+obj[next.id] = next.title;
+return obj;
+}, {});
+
+console.log(result);
+
+- Exercise 20: Retrieve the id, title, and smallest box art url for every video.
+
+var result = movieLists.concatMap(movieList => 
+	movieList.videos.concatMap(video => 
+		video.boxarts.reduce((current, next) => {
+			return current.width * current.height < next.width * next.height ? current : next;
+		})
+		.map(boxart => {
+			return {
+				id: video.id,
+				title: video.title,
+				url: boxart.url
+			};
+		})
+	)
+);
+console.log(result);
+
+
+
+clicks = Observable.forEvent(button, 'click');
+//Converts stream of simple event objects to array of observable objectss
+
+
+- Exercise 28: Subscribing to an event
+
+function(button) {
+	// the button click handler
+	var handler = function(ev) {
+		// Unsubscribe from the button event.
+		button.removeEventListener("click", handler);
+
+		alert("Button was clicked. Unsubscribing from event.");
+	};
+
+	// add the button click handler
+	button.addEventListener("click", handler);
+}
+
+- Exercise 29: Traversing an Event
+Subscribing to an event is similar to traversing an array.
+Array traversal is synchronous and completes.
+Event traversal is asynchronous and never completes.
+If we convert a button click Event to an Observable object, we can use forEach() to traverse the Event.
+
+function(button) {
+	var buttonClicks = Observable.fromEvent(button, "click");
+
+	// In the case of an Observable, forEach returns a subscription object.
+	var subscription =
+		buttonClicks.
+			forEach(function(priceRecord) {
+				alert("Button was clicked. Stopping Traversal.");
+
+				// Stop traversing the button clicks
+				subscription.dispose();
+			});
+}
+
+Disposing of a subscription is the asynchronous equivalent of stopping half-way through a counting for loop.
+Calling dispose() is same as calling removeEventListener().
+It prevents memory leaks.
+
+If we convert Events to Observable Objects, we can use powerful functions to transform them.
+
+- Exercise 30: Completing Sequences with take()
+
+Listen for the next occurrence of an event and then immediately unsubscribe.
+For example: window.onload()
+Failing to unsubscribe is a memory leak.
+Memory leaks can seriously destablize your application and can be very difficult to track down.
+The take() function creates a new sequence that completes after a discrete number of items arrive.
+Unlike an Event, when an Observable sequence completes it unsubscribes all of its listeners.
+
+function(button) {
+	var buttonClicks = Observable.fromEvent(button, "click");
+
+	// Use take() to listen for only one button click
+	// and unsubscribe.
+	buttonClicks.
+		take(1).
+		forEach(function(priceRecord) {
+			alert("Button was clicked once. Stopping Traversal.");
+		});
+}
+
+Lot like for loop with a pre defined count of data items to be processed.
+
+- Exercise 31: Completing sequences with takeUntil()
+
+function(pricesNASDAQ, printRecord, stopButton) {
+	var stopButtonClicks = Observable.fromEvent(stopButton,"click"),
+		microsoftPrices =
+			pricesNASDAQ.
+				filter(function(priceRecord) {
+					return priceRecord.name === "MSFT";
+				}).
+				takeUntil(stopButtonClicks);
+
+	microsoftPrices.
+		forEach(function(priceRecord) {
+			printRecord(priceRecord);
+		});
+}
+
+Querying Observables
+
+What's the difference between these two tasks?
+
+    Creating a flat list of movies with a rating of 5.0 from a bunch of movie lists.
+    Creating a sequence of all the mouse drag events from the mouseDown, mouseMove, and mouseUp events.
+
+The difference between traversing an Array and traversing an Observable is the direction in which the data moves.
+When traversing an Array, the client pulls data from the data source, blocking until it gets a result.
+When traversing Observables, the data source pushes data at the client whenever it arrives. 
+If we filter an Array, we get a new Array. If we filiter an Observable, we get a new Observable.
+
+
+If you avoid indexers and stick to the functions you've learned in this tutorial, you'll have a unified programming model for transforming any collection. Having a unified programming model makes it trivial to convert synchronous code to asynchronous code, a process which would otherwise be very difficult.
+
+
+- Exercise 32: Creating a mouse drag event
+
+- Exercise 33: Improving our mouse drag event
+
+map(function(movePoint) {
+	return {
+		pageX: movePoint.pageX - (contactPoint.layerX),
+		pageY: movePoint.pageY - (contactPoint.layerY)
+	};
+});
+
+
+- Exercise 34: HTTP requests
+
+function($) {
+	$.getJSON(
+		"http://api-global.netflix.com/queue",
+		{
+			success: function(json) {
+				alert("Data has arrived.");
+			},
+			error: function(ex) {
+				alert("There was an error.")
+			}
+		});
+}
+
+- Exercise 35: Sequencing HTTP requests with callbacks
+
+function(window, $, showMovieLists, showError) {
+	var error,
+		configDone,
+		movieLists,
+		queueList,
+		windowLoaded,
+		outputDisplayed,
+		errorHandler = function() {
+			// Otherwise show the error.
+			error = "There was a connectivity error";
+
+			// We may be ready to display out
+			tryToDisplayOutput();
+		},
+		tryToDisplayOutput = function() {
+			if (outputDisplayed) {
+				return;
+			}
+			if (windowLoaded) {
+				if (configDone && movieLists !== undefined) {
+					if (queueList !== undefined) {
+						movieLists.push(queueList);
+					}
+					outputDisplayed = true;
+					showMovieLists(JSON.stringify(movieLists));
+				}
+				else if (error) {
+					outputDisplayed = true;
+					showError(error);
+				}
+			}
+		},
+		windowLoadHandler = function() {
+			windowLoaded = true;
+
+			// Remember to unsubscribe from events
+			window.removeEventListener("load", windowLoadHandler);
+
+			// This may be the last task we're waiting on, so try and display output.
+			tryToDisplayOutput();
+		};
+
+	// Register for the load event
+	window.addEventListener("load", windowLoadHandler);
+
+	// Request the service url prefix for the users AB test
+	$.getJSON(
+		"http://api-global.netflix.com/abTestInformation",
+		{
+			success: function(abTestInformation) {
+				// Request the member's config information to determine whether their instant
+				// queue should be displayed.
+				$.getJSON(
+					"http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/config",
+					{
+						success: function(config) {
+							// Parallel retrieval of movie list could've failed,
+							// in which case we don't want to issue this call.
+							if (!error) {
+								// If we're supposed to
+								if (config.showInstantQueue) {
+									$.getJSON(
+										"http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/queue",
+										{
+											success: function(queueMessage) {
+												queueList = queueMessage.list;
+
+												configDone = true;
+												tryToDisplayOutput();
+											},
+											error: errorHandler
+										});
+								}
+								else {
+									configDone = true;
+									tryToDisplayOutput();
+								}
+							}
+						},
+						error: errorHandler
+					});
+
+				// Retrieve the movie list
+				$.getJSON(
+					"http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/movieLists",
+					{
+						success: function(movieListMessage) {
+							movieLists = movieListMessage.list;
+							tryToDisplayOutput();
+						},
+						error: errorHandler
+					});
+			},
+			error: errorHandler
+		});
+}
+
+Unfortunately no such support is available for asynchronous programs. 
+
+
+Converting callback-based APIs to Observables:
+
+Exercise 36: Traversing callback-based Asynchronous APIs
+
+function(window, $) {
+	var getJSON = function(url) {
+		return Observable.create(function(observer) {
+			var subscribed = true;
+
+			$.getJSON(url,
+				{
+					success:
+						function(data) {
+							// If client is still interested in the results, send them.
+							if (subscribed) {
+								// Send data to the client
+								observer.onNext(data);
+								// Immediately complete the sequence
+								observer.onCompleted();
+							}
+						},
+					error: function(ex) {
+						// If client is still interested in the results, send them.
+						if (subscribed) {
+							// Inform the client that an error occurred.
+							observer.onError(ex);
+						}
+					}
+				});
+
+			// Definition of the Subscription objects dispose() method.
+			return function() {
+				subscribed = false;
+			}
+		});
+	};
+
+	var subscription =
+		getJSON("http://api-global.netflix.com/abTestInformation").
+			forEach(
+				// observer.onNext()
+				function(data) {
+					alert(JSON.stringify(data));
+				},
+				// observer.onError()
+				function(err) {
+					alert(err)
+				},
+				// observer.onCompleted()
+				function() {
+					alert("The asynchronous operation has completed.")
+				});
+}
+
+Exercise 37: Sequencing HTTP requests with Observable
+
+function(window, getJSON, showMovieLists, showError) {
+	var movieListsSequence =
+		Observable.zip(
+			getJSON("http://api-global.netflix.com/abTestInformation").
+				concatMap(function(abTestInformation) {
+					return Observable.zip(
+						getJSON("http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/config").
+							concatMap(function(config) {
+								if (config.showInstantQueue) {
+									return getJSON("http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/queue").
+										map(function(queueMessage) {
+											return queueMessage.list;
+										});
+								}
+								else {
+									return Observable.returnValue('');
+								}
+							}),
+						getJSON("http://api-global.netflix.com/" + abTestInformation.urlPrefix + "/movieLists"),
+						function(queue, movieListsMessage) {
+							var copyOfMovieLists = Object.create(movieListsMessage.list);
+							if (queue !== undefined) {
+								copyOfMovieLists.push(queue);
+							}
+
+							return copyOfMovieLists;
+						});
+				}),
+			Observable.fromEvent(window, "click"),
+			function(movieLists, loadEvent) {
+				return movieLists;
+			});
+
+	movieListsSequence.
+		forEach(
+			function(movieLists) {
+				showMovieLists(movieLists);
+			},
+			function(err) {
+				showError(err);
+			});
+}
+
+Exercise 38: Throttle Input
+
+function (clicks, saveData, name) {
+	return clicks.
+		throttle(1000).
+		concatMap(function () {
+			return saveData(name);
+		})
+}
+
+
+Exercise 39: Autocomplete Box
+
+function (getSearchResultSet, keyPresses, textBox) {
+
+	var getSearchResultSets =
+		keyPresses.
+			map(function () {
+				return textBox.value;
+			}).
+			throttle(1000).
+			concatMap(function (text) {
+				return getSearchResultSet(text).takeUntil(keyPresses);
+			});
+
+	return getSearchResultSets;
+}
+
+
+Exercise 40: Distinct Until Changed Input
+
+function (keyPresses, isAlpha) {
+
+	return keyPresses.
+		map(function (e) { return String.fromCharCode(e.keyCode); }).
+		filter(function (character) { return isAlpha(character); }).
+		distinctUntilChanged().
+		scan('', function (stringSoFar, character) {
+			return stringSoFar + character;
+		});
+}
+
+Exercise 41: Autocomplete Box Part 2: Electric Boogaloo
+
+function (getSearchResultSet, keyPresses, textBox) {
+
+	var getSearchResultSets =
+		keyPresses.
+			map(function () {
+				return textBox.value;
+			}).
+			throttle(1000).
+			distinctUntilChanged().
+			filter(function (s) { return s.length > 0; }).
+			concatMap(function (text) {
+				return getSearchResultSet(text).takeUntil(keyPresses);
+			});
+
+	return getSearchResultSets;
+}

@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>f(r(JS){});</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<link rel="stylesheet" href="css/override.css">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>Functional Reactive JavaScript</h2>
+					<h1 class="blue">f(r(JS){});</h1>
+				</section>
+
+				<section>
+					<h1>Asynchronous World!</h1>
+				</section>
+
+				<section>
+					<h2>Synchronous World</h2>
+					<img width="450" height="450" src="images/sync1.jpeg" />
+					<img width="450" height="450" src="images/sync2.jpeg" />
+					<h2>Active and Present</h2>
+				</section>
+
+				<section>
+					<h2>Can't work in sync all the time</h2>
+					<img width="950" height="450" src="images/sync3.jpg" />
+				</section>
+
+				<section>
+					<h2>And you can't freak out</h2>
+					<img width="650" height="450" src="images/sync7.jpeg" />
+				</section>
+
+				<section>
+					<h2>Can't call</h2>
+					<img width="650" height="450" src="images/911.png" />
+				</section>
+
+				<section>
+					<h2>Deal it differently!</h2>
+					<img width="650" height="450" src="images/police-cant-help.jpeg" />
+				</section>
+
+				<section>
+					<h1>Asynchronous World</h1>
+					<img width="650" height="450" src="images/async10.jpeg" />
+				</section>
+
+				<section>
+					<h3>We need Async Programming in Async World</h3>
+					<h2 class="fragment blue">Don't call me, I will call you back!</h2>
+				</section>
+
+				<section>
+					<h2 class="blue">Why Asynchronousity:</h2>
+					<ul class="fragment">
+						<li>App initial startup</li>
+						<li>Data access</li>
+						<li>Animation</li>
+						<li>Components nature</li>
+						<li>User interaction</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 class="blue">Async Problems:</h2>
+					<ul class="fragment">
+						<li>Race conditions</li>
+						<li>Callback hell</li>
+						<li>Complex state machines</li>
+						<li>Memory leaks</li>
+						<li>Error handling</li>
+					</ul>
+				</section>
+
+				<section>
+					<pre><code data-trim>
+function playMovie(movieId, cancelButton, callback) {
+	var movieAuthTicket, playerError;
+	
+	var tryPlaying = function () {
+		if(playerError) {
+			callback(null, playerError);
+		} else {
+			callback(null, movieAuthTicket);
+		}
+	};
+	
+	cancelButton.addEventListener('click', function() {
+		playerError = 'cancelled';
+	});
+	
+	if(!player.initialized) {
+		player.init(function(error) {
+			playerError = error;
+			tryPlaying();
+		});
+	}
+	
+	authorizeMovie(function(error, ticket) {
+		playError = error;
+		movieAuthTicket = ticket;
+		tryPlaying();
+	});
+}					
+					</code></pre>
+				</section>
+
+				<section>
+					<h1>This is complicated!!!</h1>
+				</section>
+
+				<section>
+					<h2 class="blue">Iterator Pattern:</h2>
+					<pre><code data-trim>
+var iterator = getData();
+
+console.log(iterator.next());
+{ value: 1, done: false }
+
+console.log(iterator.next());
+{ value: 2, done: false }
+
+console.log(iterator.next());
+{ value: 3, done: false }
+
+console.log(iterator.next());
+{ done: true }
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h2 class="blue">Observer Pattern:</h2>
+					<pre><code data-trim>
+document.addEventListener('mousemove', function next(e) {
+	console.log(e);
+});
+
+{ clientX: 200, clientY: 400 }
+{ clientX: 201, clientY: 500 }
+{ clientX: 203, clientY: 600 }
+{ clientX: 205, clientY: 700 }
+{ clientX: 210, clientY: 800 }
+{ clientX: 220, clientY: 850 }
+{ clientX: 250, clientY: 900 }
+{ clientX: 300, clientY: 1000 }
+					</code></pre>
+				</section>
+
+				<section>
+					<h3 class="blue">What's different in Observer pattern?</h3>
+					<ul class="fragment">
+						<li>The data producer is in control</li>
+						<li>Consumer sends a callback to producer</li>
+						<li>Producer calls it to push data to consumer</li>
+						<li>Producer can't convey no more data</li>
+						<li>It deals with infinite steam of data</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3 class="blue">Array vs Events?</h3>
+					<ul class="fragment">
+						<li>Both are collection of data</li>
+						<li>Async programming == Array processing</li>
+						<li>forEach()</li>
+						<li>map()</li>
+						<li>filter()</li>
+						<li>concatAll()</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 class="blue">forEach:</h3>
+					<h4 class="fragment">
+						[1, 2, 3].forEach(function (x) { console.log(x); });
+					</h4>
+					<h4 class="fragment blue">1 2 3</h4>
+				</section>
+
+				<section>
+					<h2 class="blue">map:</h3>
+					<h4>
+						[1, 2, 3].map(function (x) { return x + 1; });
+					</h4>
+					<h4 class="fragment blue">[2, 3, 4]</h4>
+				</section>
+
+				<section>
+					<h2 class="blue">filter:</h3>
+					<h4>
+						[1, 2, 3].filter(function (x) { return x > 1; });
+					</h4>
+					<h4 class="fragment blue">[2, 3]</h4>
+				</section>
+
+				<section>
+					<h2 class="blue">concatAll:</h3>
+					<h4>
+						[[1], [2, 3], [], [4]].concatAll();
+					</h4>
+					<h4 class="fragment blue">[1, 2, 3, 4]</h4>
+				</section>
+
+				<section>
+					<h2>Top rated Movies Collection:</h2>
+					<pre><code data-trim>
+var getTopRatedFilms = user =>
+  user.videoLists
+    .map(videoList =>
+      videoList.videos
+        .filter(video => video.rating === 5.0))
+    .concatAll();
+
+getTopRatedFilms(user)
+  .forEach(film => console.log(film));
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Mouse Drags Collection:</h2>
+					<pre><code data-trim>
+var getElementDrags = elmt =>
+  elmt.mouseDowns
+    .map(mouseDown =>
+      document.mouseMoves
+        .takeUntil(document.mouseUps))
+    .concatAll();
+
+getElementDrags(image)
+  .forEach(pos => image.position = pos);
+					</code></pre>
+				</section>
+
+				<section>
+					<img class="fragment" width="650" height="650" src="images/stream.jpeg" />
+				</section>
+
+				<section>
+					<h2 class="blue">Functional Reactive Programming using Observable:</h2>
+					<ul>
+						<li class="fragment">Observable = Collection over time</li>
+						<li class="fragment">Treat multiple asynchronous data/events as Collection</li>
+						<li class="fragment">Handle them using forEach, map, filter, concatAll, etc.</li>
+						<li class="fragment">Elegant way of writing asynchronous programming</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Let's get reactive using</h2>
+					<h1 class="blue">Observable from RxJS</h1>
+				</section>
+
+				<section>
+					<h2>Exercises 27 - 40</h2>
+					<a target="_blank" href="http://pinakinmistry.github.io/learnrx">@pinakinmistry.github.io/learnrx</a>
+				</section>
+
+				<!-- <section>
+					<h2>Coding Observable from Scratch:</h2>
+					<pre><code data-trim>
+function Observable(forEach) {
+  //An observable takes a forEach function as input
+  //and holds onto to it in internal _forEach property.
+  
+  this._forEach = forEach;
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding forEach in Observable's API:</h2>
+					<pre><code data-trim>
+Observable.prototype.forEach = function (onNext, onError, onCompleted) {
+  //API for observable.forEach(onNext => ..., e => ..., c => ...)
+  if(typeof onNext === 'function') {
+    //create an observer object and assign
+    //the 3 argument functions to it
+    return this._forEach({
+      onNext: onNext,
+      onError: onError || function () {},
+      onCompleted: onCompleted || function () {}
+    });
+  } else {
+    //API for observable.forEach(
+    // {onNext: x => ...,
+    // onError: e => ...,
+    // onCompleted: c => ...})
+    return this._forEach(onNext)
+  }
+};
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding map method:</h2>
+					<pre><code data-trim>
+Observable.prototype.map = function (transformationFunction) {
+  //$P
+  var self = this;
+
+  return new Observable(function forEach(observer) {
+    return self.forEach(
+      function onNext(event) {
+      	observer.onNext(transformationFunction(event));
+      },
+      function onError(event) {
+      	observer.onError(event);
+      },
+      function onCompleted() {
+      	observer.onCompleted();
+      }
+    );
+  });
+};
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>self = thisDream || outerWorld;</h2>
+					<img src="images/totem.gif" width="900" height="500" />
+				</section>
+
+				<section>
+					<h2>Adding filter method:</h2>
+					<pre><code data-trim>
+Observable.prototype.filter = function (testFunction) {
+  var self = this; //source observable
+  return new Observable(function forEach(observer) {
+    return self.forEach(
+      function onNext(event) {
+        if(testFunction(event)) {
+          observer.onNext(event);
+        }
+      },
+      function onError(event) { observer.onError(event); },
+      function onCompleted() { observer.onCompleted(); }
+    );
+  });
+ };
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding take method:</h2>
+					<pre><code data-trim>
+Observable.prototype.take = function (limitTo) {
+  var self = this;
+  return Observable(function forEach(observer) {
+    var counter = 0,
+    subcription = self.forEach(
+      function onNext(v) {
+        observer.onNext(v);
+        counter++;
+        if(counter === limitTo) {
+          observer.onCompleted();
+          subcription.dispose();
+        }
+      },
+      function onError(e) {
+        observer.onError(e);
+      },
+      function onCompleted() {
+        observer.onCompleted();
+      }
+    );
+    return subcription;
+  });
+};
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Adding fromEvent method:</h2>
+					<pre><code data-trim>
+Observable.fromEvent = function(domElement, eventName) {
+  return new Observable(function forEach(observer) {
+    var handler = function(event) {
+      observer.onNext(event);
+    };
+
+    domElement.addEventListener(eventName, handler);
+
+    //Subcription object
+    return {
+      dispose: function () {
+        domElement.removeEventListener(eventName, handler);
+      }
+    };
+  });
+};
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Mouse clicks as observable:</h2>
+					<pre><code data-trim>
+var button = document.getElementById("button");
+
+var clicks =
+  Observable
+  .fromEvent(button, "click")
+  .map(function (e) {
+      return e;
+    });
+
+console.log(clicks);
+
+clicks.forEach(function (e) {
+  console.log(e.pageX, e.pageY);
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>You need some &lt;html&gt; as well:</h2>
+					<pre><code data-trim>
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+  <button id="button">Click me and get x and y coordinates</button>
+  <script src="observable.js"></script>
+&lt;/body&gt;
+&lt;/html&gt;
+					</code></pre>
+				</section> -->
+
+				<section>
+					<h2 class="blue">Advantages of f(r(JS){}):</h2>
+					<ul>
+						<li class="fragment">Same code for Sync and Async data stream(s)</li>
+						<li class="fragment">With power of higher order collection functions</li>
+						<li class="fragment">No events/promises based Spaghetti code</li>
+						<li class="fragment">Simple subscribe and unsubscribe mechanism</li>
+						<li class="fragment">Can stop an onging Async operation anytime</li>
+						<li class="fragment">Sequencing of Async streams - Piece of Cake</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Say no to for(;;)</h2>
+					<h1 class="blue fragment">Say yes to f(r(JS){}); -)</h2>
+				</section>
+
+				<section>
+					<h2>See you again in 4 weeks. Code Best!</h2>
+					<img src="images/thumpsup.gif" width="800" height="600" />
+				</section>
+
+				<section>
+					<h2><a href="http://pinakinmistry.github.io/" target="_blank">@pinakinmistry</a></h2>
+				</section>
+
+				
+
+				
+
+
+
+
+
+
+
+				
+	
+
+
+
+				
+	
+
+
+
+
+
+
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
