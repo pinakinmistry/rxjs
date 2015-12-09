@@ -1,0 +1,393 @@
+- Functional programming helps us to abstract away common/generic operations into resuable, composable building blocks.
+
+- FP breaks a problem/solution pair into one or more functions working in unison making our code self-descriptive, consise, and durable.
+
+- Very similar to Lego game where each block has generic/specific role, and compose with other blocks to build/solve something bigger in an elegant way. Composition, Web Components, Composibility.
+
+- Functional programming on collections/arrays:
+forEach
+map
+filter
+concatAll
+reduce
+zip
+
+- These functions simplify asynchronous programming to race conditions, propagate and handle asynchronous errors, and sequence events and AJAX requests.
+
+What's the difference between:
+Synchronous programming
+Asynchronous programming
+Procedural
+Imperative
+Functional
+Functional Reactive
+
+
+- jhusain/learnrx
+Exercise 1: Print all the names in an array
+Exercise 2: Use forEach to print all the names in an array
+- Using ES6 arrow notation in firefox v24+
+Exercise 3: Project an array of videos into an array of {id,title} pairs using forEach()
+Exercise 4: Implement map()
+Exercise 5: Use map() to project an array of videos into an array of {id,title} pairs
+Exercise 6: Use forEach() to collect only those videos with a rating of 5.0
+
+
+
+
+Points:
+- Notations
+- @jschannel
+- @pykih
+- LearnJS: Short answer: JavaScript is awesome. Long answer: prove short answer with this workshop.
+
+
+
+
+
+
+
+http://awardwinningfjords.com/2014/04/21/functional-programming-in-javascript-equals-garbage.html
+
+AGENDA:
+1. Syncronous Progamming
+2. Asyncronous Programming
+3. Function Programming
+4. Reactive Programming
+5. Function Programming using Arrays
+6. Function Reactive Programming using Observable
+7. Build Observable from scratch and use it for some FR programming
+
+SYNOPSIS:
+Observable = Collection over time;
+
+We can handle multiple asynchronous data/events stream(s) and subscribe to react(process) on it using the Observer object. The Observable notifies the subscribed Observer instance whenever an event occurs.
+
+Because observable sequences are data streams, we can query them using standard query operators implemented by the Observable type. Thus we can filter, project, aggregate, compose and perform time-based operations on multiple events easily by using these operators. In addition, there are a number of other reactive stream specific operators that allow powerful queries to be written. Cancellation, exceptions, and synchronization are also handled gracefully by using the methods on the Observable object.
+
+y = f(x)
+y = f(f(x))
+
+
+Observables:
+Observable = Collection over time.
+It is lot like an event.
+it is a sequence of values that a data producer pushes to the consumer.
+It can signal to a listener that it has completed, and will send no more data.
+It can send data to consumers asynchronously.
+
+
+// An array of numbers 1,2,3
+var numbers123Array =      [1,2,3];
+
+// A sequence that returns 1, and then after 4 seconds returns 2,
+// and then after another second returns 3, and then completes.
+var numbers123Observable = seq([1,,,,,,,,,,,,2,,,3]);
+
+// Like Arrays, Observables can contain any object - even Arrays.
+var observableOfArrays = seq([ [1,2,3],,,,,,[4,5,6],,,,,,,,,,,[1,2] ])
+
+
+
+It can go on sending data to a listener forever.
+
+// The trailing ,,, ensures that the sequence will not complete.
+var mouseMovesObservable =
+    seq([ {x: 23, y: 55},,,,,,,{x: 44, y: 99},,,{x:55,y:99},,,{x: 54, y:543},,, ]);
+
+// No trailing ,,, indicates that sequence will complete.
+var numbers123Observable = seq([1,,,2,,,3]);
+
+Querying Observables allows us to create data sets that react and update over time.
+This type of programming is reactive programming.
+
+
+
+
+
+
+
+
+FFJS:
+
+- YDKJS
+
+- Why JavaScript, why now, small language
+
+- History of JavaScript. How it survived the war and became #1
+
+- Basics
+	Datatypes
+	Array
+	Object
+	Function, First Class Citizen, Function dec, Function dec vs exp, Function Scope, Passing function, returning function, nested function, argument, Function constructor, NodeJS CommomJS modules
+	Prototype
+	Inheritance
+	Composition
+
+- Advanced
+	Functional JS
+	Array methods, forEach, map, filter, reduce
+	Common between 2 or more arrays
+
+
+
+
+
+
+
+function clear() {
+  process.stdout.write('\u001B[2J\u001B[0;0f');
+}
+
+
+
+1. Hit FF button. Watching movie. Help realize that it is good.
+2. like || love || hate ? learnJS() : learnJS();
+3. !loveAtFirstSite;
+5. firstEncounter();
+6. JS is most the hated language because it is the most misunderstood language and that's because people start using it without learning it.
+7. Worst, people don't know that it's still in use and its #1 language. People don't know its history.
+8. Two decades.
+
+- JS is loosely typed and dynamic language.
+- Datatypes in JavaScript.
+	typeof undefined
+	typeof true
+	typeof 42
+	typeof "42"
+	typeof { life: 42 }  === "object";
+	// added in ES6!
+	typeof Symbol()      === "symbol";
+	=== "undefined"; // true
+	=== "boolean";
+	=== "number";
+	=== "string";
+	// true
+	// true
+	// true
+	// true
+	// true
+
+- JS function are first class citizen.
+- function declaration vs function expression.
+- Passing function to another function.
+- Implicit arguments to a function.
+
+Surya Rostogi 9769009943
+Hardik shah 9930014089
+
+//mistrypinakin
+
+// Given 2 or more unsorted arrays, find the elements common to all of them.
+// eg:
+
+var a = [1, 3, 2, 5, 3, 7, 3, 5, 9, 0],
+    b = [2, 4, 7, 5, 1, 2, 8],
+    c = [5, 3, 7, 6];
+
+// Result is [5, 7]
+
+var a = [0, 1, 2],
+    b = [3, 4, 1],
+    c = [4, 1],
+    d = [8, 1, 9];
+    
+// Result is [1]
+
+function findCommon() {
+   return Array.prototype.reduce.call(arguments, function(current, next) {
+        console.log(current, next);
+        var common = [];
+        current.forEach(function(element) {
+            if(next.indexOf(element) > -1 && common.indexOf(element) == -1) {
+                common.push(element);
+            }
+        });
+        return common;
+    });
+}
+
+
+
+
+
+// Given an object, find all "falsy" property values
+// eg:
+
+var data = {
+    title: "The Thing",
+    authorId: 4488,
+    publishDate: undefined,
+    meta: {
+        type: "script",
+        refId: null
+    },
+    sigma: [
+        {
+            name: ["temporal"],
+            value: 0
+        }, {
+            name: "variational",
+            value: 1
+        }
+    ]
+};
+
+data.meta.circular = data.meta
+
+// Result
+//publishDate: undefined
+//refId: null
+//value: 0
+
+Take care of circular references like sigma: data as a property in data object
+
+function findFalsy(data) {
+    for(var property in data) {
+        //console.log(property, typeof data[property])
+        if(typeof data[property] === 'object' && data[property] != data) {
+            findFalsy(data[property]);
+        }
+        if(data.hasOwnProperty(property)) {
+            if(!data[property]) {
+                console.log(property, data[property]);    
+            }
+            
+        }
+    }
+}
+
+
+https://www.airpair.com/javascript/posts/switching-from-ios-to-ionic
+nativescript.org
+
+
+http://stackoverflow.com/questions/11777890/equivalence-of-window-onbeforeunload-in-angularjs-for-routes
+
+function findCommon() {
+   return Array.prototype.reduce.call(arguments, function(current, next) {
+        console.log(current, next);
+        var common = [];
+        current.forEach(function(element) {
+            if(next.indexOf(element) > -1 && common.indexOf(element) == -1) {
+                common.push(element);
+            }
+        });
+        return common;
+    });
+}
+
+
+[1,2,3,4,5].reduce(function(curr, next) {
+    
+});
+
+function findCommon() {
+    return Array.prototype.reduce.call(arguments, function(current, next) {
+        console.log(current, next);
+        return next;
+    });
+}
+
+
+function f() { return 'Hi'; }
+
+f.name
+f.call
+f.apply
+f.arguments
+
+function f() { return 'Hi ' + this.name; }
+pinakin = {name: 'Pinakin'}
+f.call(pinakin);
+
+f = function () { return arguments; }
+f(1,2,3)
+f([1,2], [3], [4]);
+
+
+a = [1,2,3,4,5]
+Array.prototype.indexOf
+Array.prototype.reduce
+
+a.reduce(function(current, next) {
+    console.log(current, next);
+    return next;
+})
+a.reduce(function(current, next) {
+    console.log(current, next);
+    return next + current;
+});
+
+COMMON BETWEEN 2 OR MORE ARRAYS:
+--------------------------------
+Call reduce on arguments by borrowing it from Array:
+var a = [0, 1, 2],
+    b = [3, 4, 1],
+    c = [4, 1],
+    d = [8, 1, 9];
+
+var a = [1, 3, 2, 5, 3, 7, 3, 5, 9, 0],
+    b = [2, 4, 7, 5, 1, 2, 8],
+    c = [5, 3, 7, 6];
+
+function f() {
+    Array.prototype.reduce.call(arguments, function(current, next) {
+        console.log(current, next);
+        return next;
+    });
+}
+
+function findCommon() {
+    return Array.prototype.reduce.call(arguments, function(current, next) {
+        console.log(current, next);
+        return next;
+    });
+}
+
+function findCommon() {
+    return Array.prototype.reduce.call(arguments, function(current, next) {
+        var common = [];
+        console.log(current, next);
+        current.forEach(function(element) {
+            if(next.indexOf(element) > -1) {
+                common.push(element);
+            }
+        });
+        return common;
+    });
+}
+
+function findCommon() {
+    return Array.prototype.reduce.call(arguments, function(current, next) {
+        var common = [];
+        console.log(current, next);
+        current.forEach(function(element) {
+            if(next.indexOf(element) > -1 && common.indexOf(element) == -1) {
+                common.push(element);
+            }
+        });
+        return common;
+    });
+}
+
+
+function findCommon() {
+    return Array.prototype.reduce.call(arguments, function(current, next) {
+        var common = [];
+        current.forEach(function(element) {
+            if(next.indexOf(element) > -1 && common.indexOf(element) == -1) {
+                common.push(element);
+            }
+        });
+        return common;
+    });
+}
+
+var a = [0, 1, 2],
+    b = [3, 4, 1],
+    c = [4, 1],
+    d = [8, 1, 9];
+
+
