@@ -49,7 +49,7 @@
 
 				<section>
 					<h2>Notation Used in these slides:</h2>
-					<h1><i><b class="blue">$P</b></i></h2>
+					<h1><i><b class="blue">$S</b></i></h2>
 						<span class="fragment">
 							<img width="600" height="200" src="images/perk.jpeg" />
 							<h2>Get Perks for right answers.</h2>
@@ -62,43 +62,46 @@
 					<ul>
 						<li class="fragment">Spec/Acceptance criteria in executable form</li>
 						<li class="fragment">Bullet proof your logic</li>
-						<li class="fragment">No one (including myself) can break the logic ever!</li>
+						<li class="fragment">No one (including myself) can break the logic, ever!</li>
 						<li class="fragment">Fastest way of testing without even opening the app
 					</ul>
 				</section>
 
 				<section>
 					<h2 class="blue">What is unit testing?</h2>
-					<h2 class="fragment">What is unit in unit testing?</h2>
+					<h2 class="fragment">What is unit in unit testing? $S</h2>
 					<h2 class="fragment">Where does the logic reside?</h2>
 					<h2 class="fragment">Class/method?</h2>
 				</section>
 
 				<section>
-					<h2 class="blue">output = myMethod(input);</h2>
+					<h2 class="blue">output = obj.myMethod(input);</h2>
 					<h1 class="fragment">input -> logic -> output</h1>
 				</section>
 
 				<section>
-					<h2 class="blue">Are checks on properties valid?</h2>
-					<h4 class="fragment">I should be able to see my hand</h4>
-					<h4 class="fragment">I should be able to unlock my phone with hand</h4>
+					<h2 class="blue">Is property defined test valid?</h2>
+					<span class="fragment">
+						<h4>I should be able to unlock my phone with hand</h4>	
+						<h4 class="blue">is better than</h4>
+						<h4>I should be able to see my hand</h4>	
+					</span>
+					
 				</section>
 
 				<section>
-					<h2 class="blue">Do one thing, do it properly!</h2>
-					<h2 class="fragment">UNIX</h2>
+					<h2 class="blue">Do one thing, do it well! $S</h2>
+					<h2 class="fragment">Unix Philosophy</h2>
 					<h1 class="fragment">Code testability!</h1>
 				</section>
 
 				<section>
-					<h2 class="blue">Advantages of small methods?</h2>
+					<h2 class="blue">Advantages of small methods? $S</h2>
 					<ul>
 						<li class="fragment">Isolated logic/less code</li>
 						<li class="fragment">Less places for bugs to hide</li>
-						<li class="fragment">Testable code</li>
-						<li class="fragment">Unit tests ensures logic work as expected all the time</li>
-						<li class="fragment">Integration/E2E testing becomes much leaner</li>
+						<li class="fragment">Testable code asserting single expectation</li>
+						<li class="fragment">Easy to write, read, understand and maintain</li>
 					</ul>
 				</section>
 
@@ -113,9 +116,12 @@
 					<h1 class="fragment">It comes by practice!</h1>
 				</section>
 
+				<section>
+					<img src="images/tdd.jpg" width="1000" height="700" />
+				</section>
 
 				<section>
-					<h3 class="blue">A piece can be placed on any empty space of 3×3 board</h3>
+					<h3 class="blue">A piece can be placed on any empty space of 3×3 board.</h3>
 					<ul>
 						<li class="fragment">Outside the X axis, throw RuntimeException</li>
 						<li class="fragment">Outside the Y axis, throw RuntimeException</li>
@@ -124,8 +130,13 @@
 				</section>
 
 				<section>
-					<h2 class="blue">How to test RuntimeException?</h2>
-					<h1 class="fragment">@Rule</h1>
+					<h2 class="blue">How to test RuntimeException? $S</h2>
+					<span class="fragment">
+						<h1>@Rule</h1>
+						<h1 class="blue">JUnit 4.7</h1>
+
+					</span>
+					
 				</section>
 
 				<section>
@@ -276,7 +287,7 @@ private void setBox(int x, int y) {
 
 
 				<section>
-					<h3 class="blue">There should be a way to find out which player should play next</h3>
+					<h3 class="blue">There should be a way to find out which player should play next.</h3>
 					<ul>
 						<li class="fragment">The first turn should be X</li>
 						<li class="fragment">If the last turn was X, next turn is O</li>
@@ -338,7 +349,7 @@ public char nextPlayer() {
 				</section>
 
 				<section>
-					<h3 class="blue">A player wins by being the first to connect a line of friendly pieces from one side or corner of the board to the other</h3>
+					<h3 class="blue">A player wins by being the first to connect a line of friendly pieces from one side or corner of the board to the other.</h3>
 				</section>
 
 				<section>
@@ -610,7 +621,7 @@ private boolean isWin(int x, int y) {
 				</section>
 
 				<section>
-					<h2 class="blue">The result is a draw when all the boxes are filled</h2>
+					<h2 class="blue">The result is a draw when all the boxes are filled.</h2>
 				</section>
 
 				<section>
