@@ -1,0 +1,32 @@
+<html data-ng-app="todoApp">
+<head>
+	<title>todoApp</title>
+	<link rel="stylesheet" type="text/css" href="todo.css">
+</head>
+<body class="wrapper">
+	<div ng-controller="TodoAppController">
+		<div ng-repeat="todoList in todoLists" class="list">
+			<input type="text" ng-model="todoList.text"/>
+			<button ng-click="addTodo(todoList)">Add</button>
+			<h1>{{todoList.title}}</h1>
+			<h4>Tasks remaining</h4>
+			<ul>
+				<li ng-repeat="todo in todoList.todos | filter: {done: false}">
+					<input type="checkbox" ng-model="todo.done"/>
+					<span>{{todo.text}}</span>
+				</li>
+			</ul>
+
+			<h4>Tasks done</h4>
+			<ul>
+				<li ng-repeat="todo in todoList.todos | filter: {done: true}">
+					<input type="checkbox" ng-model="todo.done"/>
+					<span ng-bind="todo.text"></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+	<script type="text/javascript" src="todo.js"></script>
+</body>
+</html>

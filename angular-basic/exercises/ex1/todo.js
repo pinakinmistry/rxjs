@@ -1,6 +1,5 @@
 angular.module('todoApp', [])
 	.controller('TodoListController', function ($scope) {
-
 		$scope.todoLists = [
 			{
 				title: 'My superheroic Angular todo list',
@@ -23,5 +22,4 @@ angular.module('todoApp', [])
 			$scope.todoLists[index].todos.push({text: todoList.todoText, done: false});
 			todoList.todoText = '';
 		};
-
 	});
