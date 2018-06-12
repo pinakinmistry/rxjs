@@ -1,0 +1,42 @@
+.slides h1,
+.slides h2,
+.slides h3,
+.slides h4,
+.slides h5,
+.slides h6 {
+	text-transform: none;
+	margin: 0;
+}
+
+.slides li {
+	text-align: left;
+}
+
+code {
+	font-size: 30px !important;
+	line-height: 36px !important;
+}
+
+ul .fragment {
+	margin-top: 10px;
+}
+
+.reveal .slides > section, .reveal .slides > section > section {
+	padding: 0;
+}
+
+.reveal section img {
+	border: none;
+}
+
+.reveal pre code {
+	max-height: 700px; 
+}
+
+.reveal pre {
+	width: 95%;
+}
+
+.reveal .blue {
+	color: #42affa;
+}
