@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Reactive Programming Using RxJS</title>
+		<meta name="description" content="Why, What and How RxJS with examples and best practices">
+		<meta name="author" content="Hakim El Hattab">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+		<link rel="stylesheet" href="css/override.css">
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+        <section>
+          <h3>Reactive Programming</h3>
+          <h1 class="blue">Using RxJS</h1>
+          <h4>Why, What and How to RxJS with Examples and Best Practices</h4>
+        </section>
+
+				<section>
+					<h1 class="blue">Modern Apps</h1>
+					<h4>Dynamic Data/Content and Increased Interactivity</h4>
+        </section>
+
+        <section>
+          <h1 class="blue">User Events</h1>
+          <ul>
+            <li>Infinite Scrolling</li>
+            <li>Switching Views</li>
+            <li>Post</li>
+            <li>Swipe</li>
+            <li>Like</li>
+            <li>Comment</li>
+            <li>Follow</li>
+            <li>Play/Pause</li>
+            <li>...</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1 class="blue">System Events</h1>
+          <ul>
+            <li>Arrival of Data</li>
+            <li>Real Time Updates</li>
+            <li>Buffering</li>
+            <li>Auto Play/Pause</li>
+            <li>Online/Offline Switchovers</li>
+            <li>Notifications</li>
+            <li>Background Processing</li>
+            <li>...</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="blue">We are Subscribed as Consumers of</h2>
+          <h1>Continuous Content/Events</h1>
+          <h4 class="fragment">Examples?</h4>
+        </section>
+
+        <section>
+          <h2 class="blue">Subscribe by clicking Bell icon</h2>
+          <img src="images/Youtube.png" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h2 class="blue">Apps as State Machine</h2>
+          <img src="images/clock.png" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h2 class="blue">Going from one state to another on events</h2>
+          <img src="images/clock-internals.png" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h2>Modern Apps need</h2>
+          <h1 class="blue">Modern Approach</h1>
+          <h3>By treating events as continuous observable streams</h3>
+        </section>
+
+        <section>
+          <h2>We just <em>`subscribe()`</em> to</h2>
+          <h1 class="blue"><em>`Observable`</em> streams</h1>
+          <h3>and react to <em>`next()`</em> event to handle the change</h3>
+        </section>
+
+        <section>
+          <h1>What is a stream?</h1>
+        </section>
+
+        <section>
+          <h1 class="blue"><em>Everything is a Stream!</em></h1>
+          <img src="images/everything-is-stream.png" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h1 class="blue"><em>Everything is a Stream!</em></h1>
+          <ul>
+            <li>Reading</li>
+            <li>Listening</li>
+            <li>Thinking</li>
+            <li>Understanding</li>
+            <li>Doing</li>
+            <li>...</li>
+          </ul>
+          <h2 class="blue fragment"><em>Right Now and in Future</em></h2>
+        </section>
+
+        <section>
+          <h1 class="blue"><em>Everything is a Stream!</em></h1>
+          <ul>
+            <li>It's Ongoing</li>
+            <li>Untimely</li>
+            <li>Short/Long Lived</li>
+            <li>Can Interrupt</li>
+            <li>Can Terminate</li>
+          </ul>
+          <h1 class="blue fragment">So Keep Breathing!</h1>
+        </section>
+
+        <section>
+          <h1 class="blue"><em>Everything is a Stream!</em></h1>
+          <ul>
+            <li>Data</li>
+            <li>Change in Data</li>
+            <li>Events</li>
+            <li>Errors</li>
+          </ul>
+          <h2 class="blue">Are Streams too</h2>
+        </section>
+
+        <section>
+          <img src="img/producer-consumer.jpg" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h3 class="blue">Paste below code in browser devtools console</h3>
+          <pre>
+            <code>
+document.addEventListener('mouseenter', function () {
+    console.log('Mouseenter Event');
+});
+document.addEventListener('mouseleave', function () {
+    console.log('Mouseleave Event');
+});
+document.addEventListener('click', function () {
+    console.log('Click Event');
+});
+document.addEventListener('mousemove', function () {
+    console.log('Mousemove Event');
+});
+            </code>
+          </pre>
+        </section>
+
+        <section>
+            <h1 class="blue">Imperative vs Declarative Approach</h1>
+            <div class="fragment">
+              <h3 class="">Imperative focuses more on <em>`how to do`</em></h3>
+              <h3 class="blue">Declarative focuses more on <em>`What to do`</em></h3>
+            </div>
+        </section>
+
+        <section>
+          <h3>Declarative hides Implementation Details</h2>
+          <h2 class="blue">With High Level Directives on <em>`what to do`</em></h3>
+          <h3>Delegating How Part to</h2>
+          <h1 class="blue">Library and Framework</h1>
+          <h3 class="fragment">Examples?</h3>
+        </section>
+
+        <section>
+          <h2 class="blue">Declarative Libraries and Frameworks</h2>
+          <ul>
+            <li>Underscore</li>
+            <li>LoDash</li>
+            <li>D3</li>
+            <li>AngularJS</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1 class="blue">Reactive Approach</h1>
+          <div class="fragment">
+            <h3>Declarative approach to react to an event by</h3>
+            <h2 class="blue">Providing what needs to be done</h2>
+            <h3>when that event occurs</h3>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="blue">And then it keeps <em>`Repeating`</em> the same</h2>
+          <h3>Whenever that event occurs</h3>
+          <h1 class="blue">Making it <em>`Reactive`</em></h1>
+          <h3 class="fragment">Examples?</h3>
+        </section>
+
+        <section>
+          <h2 class="blue">Reactive Libraries and Frameworks</h2>
+          <ul>
+            <li>React</li>
+            <li>Angular</li>
+            <li>VueJS</li>
+            <li>Angular Firebase</li>
+            <li>NgRx</li>
+            <li class="fragment">RxJS</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>RxJS</h1>
+          <h2 class="blue">Reactive Extensions for JavaScript</h2>
+          <h3>Utility library for handling streams and events</h3>
+          <h1 class="blue">In Reactive Way</h1>
+        </section>
+
+
+
+
+
+
+
+        <!-- <section>
+          <h2>Bleeding Edge!</h2>
+          <h2 class="blue fragment">There will be Blood!</h2>
+        </section> -->
+
+				<!-- <section>
+					<h1><i><b class="blue">$Q</b></i>: Perk</h2>
+						<span>
+							<img width="600" height="200" src="images/perk.jpeg" />
+						</span>
+					</h1>
+        </section> -->
+
+        <section>
+          <h2 class="blue">References:</h2>
+          <ul>
+            <li>
+              <a href="http://facebook.github.io/graphql/">
+                http://facebook.github.io/graphql/
+              </a>
+            </li>
+            <li>
+              <a href="https://www.howtographql.com">
+                https://www.howtographql.com/
+              </a>
+            </li>
+            <li>
+              <a href="https://www.graphql.com/">
+                https://www.graphql.com/
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://dev-blog.apollodata.com/graphql-over-rest-with-node-heroku-and-apollo-engine-fb8581f8d77f"
+                target="_blank">
+                TicketMaster example
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/watch?v=3Rmjqsz-txM">
+                JSChannel Talk
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="blue">Happy GraphQLing</h2>
+          <img src="images/thumpsup.gif" width="600" height="500" />
+          <h2>@pinakinmistry</h2>
+        </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
