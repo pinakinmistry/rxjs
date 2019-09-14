@@ -277,10 +277,10 @@ document.addEventListener('mousemove', function () {
             <li>Public emitters of data</li>
             <li>Timing issue; notifying consumers before they are subscribed</li>
             <li>Sequencing issue</li>
-            <li>Low Data Encapsulation</li>
+            <li>Low data encapsulation</li>
             <li>Low cohesion</li>
             <li>High coupling</li>
-            <li>Strange Side Effects</li>
+            <li>Strange side effects</li>
             <li>Spaghetti code</li>
           </ul>
         </section>
@@ -292,7 +292,7 @@ document.addEventListener('mousemove', function () {
         <section>
           <h1 class="blue">Lessons ToDo App</h1>
           <h3>Using Imperative Approach with</h2>
-          <h2 class="blue">Event Bus</h2>
+          <h2 class="blue">Global Event Bus</h2>
         </section>
 
         <section>
@@ -324,7 +324,7 @@ document.addEventListener('mousemove', function () {
 
     <lessons-list></lessons-list>
 
-    <input #input/>
+    <input #input />
 
     <button class="button button-highlight"
 
@@ -349,7 +349,137 @@ export interface Lesson {
           </pre>
         </section>
 
+        <section>
+          <img src="img/subject-observer.jpg" alt="" width="1100" height="600" />
+        </section>
 
+        <section>
+          <pre>
+            <code>
+// eventbus.service.ts
+//
+export interface Observer {
+  // Get notified with new data
+  notify(data:any);
+}
+
+interface Subject {
+  // Accepts an eventType and observer that needs to be notified on that event
+  subscribeObserver(eventType:string, obs:Observer);
+
+  // Accepts an observer that no longer needs to be notified on given eventType
+  unsubscribeObserver(eventType:string, obs:Observer);
+
+  // Notifies all observers of given eventType with given data
+  notifyObservers(eventType:string, data:any);
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+            <pre>
+              <code>
+  // eventbus.service.ts
+  //
+  ...
+  class EventBus implements Subject {
+
+    // Mapping of event type and list of observers subscribed to it
+    private observers : {[key:string]: Observer[]} = {};
+
+    // Maintains list of all observers of given eventType
+    subscribeObserver(eventType:string, obs: Observer) {
+        this.observersPerEventType(eventType).push(obs);
+    }
+
+    // Removes given observer from the list of given eventType
+    unsubscribeObserver(eventType:string, obs: Observer) {
+        const newObservers = _.remove(
+            this.observersPerEventType(eventType), el => el === obs );
+        this.observers[eventType] = newObservers;
+    }
+
+    // Notifies all observers of given eventType with new data
+    notifyObservers(eventType:string, data: any) {
+        this.observersPerEventType(eventType)
+            .forEach(obs => obs.notify(data));
+    }
+
+    // Returns list of observers for given eventType
+    private observersPerEventType(eventType:string): Observer[] {
+        const observersPerType = this.observers[eventType];
+        if (!observersPerType) {
+            this.observers[eventType] = [];
+        }
+        return this.observers[eventType];
+    }
+}
+
+// Make Event Bus globally available to other parts of application
+export const globalEventBus = new EventBus();
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <h2 class="blue">Problems in Individual Components</h2>
+            <ul>
+              <li>Local state</li>
+              <li>Local state initialization</li>
+              <li>Local state updates/mutations</li>
+              <li>Notifying updates to other components</li>
+              <li>Sharing state by reference</li>
+              <li>Updates shared without notification</li>
+              <li>No clear data ownership</li>
+              <li>Low cohesion</li>
+              <li>High coupling</li>
+            </ul>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// event-bus-experiments.component.ts
+//
+export class EventBusExperimentsComponent implements OnInit {
+
+    // Local copy of lessons (local state)
+    lessons: Lesson[] = [];
+
+    ngOnInit() {
+        // Initialize state
+        this.lessons = testLessons;
+
+        // Notify all subscribed observers about lessons just initialized
+        // Note that testLessons is notified to all observers
+        // by reference instead of by value
+        // This causes tight coupling and side effects
+        globalEventBus.notifyObservers(LESSONS_LIST_AVAILABLE,
+            testLessons);
+
+        setTimeout(() => {
+            // Mock new lesson sent by backend
+            // Local state updated and notified to all subscribed observers
+            this.lessons.push({
+                id: Math.random(),
+                description: 'New lesson arriving from backend'
+            });
+            // LessonsListComponents and LessonsCounterComponent gets notified
+            // even if we comment out below line because it is using reference
+            // to EventBusExperimentsComponent's lessons in its notify method
+            globalEventBus.notifyObservers(LESSONS_LIST_AVAILABLE, this.lessons);
+        }, 5000);
+    }
+
+    addLesson(lessonText: string) {
+        // Notifying new data to all subscribed observers
+        globalEventBus.notifyObservers(ADD_NEW_LESSON, lessonText);
+    }
+}
+              </code>
+            </pre>
+          </section>
 
 
         <!-- <section>
