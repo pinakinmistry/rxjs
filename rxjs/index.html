@@ -481,6 +481,86 @@ export class EventBusExperimentsComponent implements OnInit {
             </pre>
           </section>
 
+          <section>
+            <pre>
+              <code>
+// lessons-list.component.ts
+//
+export class LessonsListComponent implements Observer {
+
+    // Local state
+    lessons: Lesson[] = [];
+
+    constructor() {
+        // Subscribe to initial list of lessons
+        globalEventBus.subscribeObserver(LESSONS_LIST_AVAILABLE, this);
+
+        // Subscribe to new lesson being added in future
+        // to update the local lessons list
+        globalEventBus.subscribeObserver(ADD_NEW_LESSON, {
+            notify: lessonText => {
+                // this.lessons here is pointing to
+                // EventBusExperimentsComponent's lessons (local state)
+                // as it is shared by reference
+                this.lessons.push({
+                    id: Math.random(),
+                    description: lessonText
+                });
+            }
+        } );
+    }
+
+    notify(data: Lesson[]) {
+        // Get notified once Lessons are available
+        // Note that data is reference to testLessons
+        // from EventBusExperimentsComponent
+        this.lessons = data;
+    }
+
+    toggleLessonViewed(lesson:Lesson) {
+        // Local updates not notified to subscribed observers
+        lesson.completed = !lesson.completed;
+    }
+
+    delete(deleted:Lesson) {
+        // Local updates not notified to subscribed observers
+        _.remove(this.lessons,
+            lessons => lesson.id === deleted.id);
+    }
+}
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// lessons-list.component.html
+//
+<table class="table lessons-list card card-strong">
+    <tbody>
+        <tr *ngFor="let lesson of lessons">
+            <td class="viewed">
+                <input [checked]="lesson.completed" type="checkbox"
+                    (click)="toggleLessonViewed(lesson)">
+            </td>
+            <td class="lesson-title" [ngClass]="{'lesson-viewed':lesson.completed}">
+                {{ lesson.description }}
+            </td>
+            <td class="duration">
+                <i class="md-icon duration-icon">access_time</i>
+                <span>{{lesson.duration}}</span>
+            </td>
+            <td>
+                <button class="button button-highlight"(click)="delete(lesson)">X</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+              </code>
+            </pre>
+          </section>
+
 
         <!-- <section>
           <h2>Bleeding Edge!</h2>
