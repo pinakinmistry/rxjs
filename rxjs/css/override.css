@@ -8,7 +8,7 @@
 	margin: 0;
 }
 
-.slides li {
+.slides li, .left {
 	text-align: left;
 }
 
@@ -17,8 +17,8 @@
 }
 
 code {
-	font-size: 30px !important;
-	line-height: 36px !important;
+	font-size: 22px !important;
+	line-height: 28px !important;
 }
 
 ul .fragment {
@@ -34,7 +34,7 @@ ul .fragment {
 }
 
 .reveal pre code {
-	max-height: 700px; 
+	max-height: 700px;
 }
 
 .reveal pre {

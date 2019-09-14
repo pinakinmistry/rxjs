@@ -265,6 +265,91 @@ document.addEventListener('mousemove', function () {
           <h2 class="blue fragment">Look Ma what I found, RxJS!</h2>
         </section>
 
+        <section>
+          <h3 class="blue">Drawbacks of Imperative/non Reactive Approach</h3>
+          <ul>
+            <li>Sharing data/state and its ownership</li>
+            <li>Copying data/state locally</li>
+            <li>Local updates not propogated to other consumers</li>
+            <li>Additional listeners to update local state</li>
+            <li>State ownership not defined</li>
+            <li>Global event bus</li>
+            <li>Public emitters of data</li>
+            <li>Timing issue; notifying consumers before they are subscribed</li>
+            <li>Sequencing issue</li>
+            <li>Low Data Encapsulation</li>
+            <li>Low cohesion</li>
+            <li>High coupling</li>
+            <li>Strange Side Effects</li>
+            <li>Spaghetti code</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1 class="blue">Unpredictable Behavior</h1>
+        </section>
+
+        <section>
+          <h1 class="blue">Lessons ToDo App</h1>
+          <h3>Using Imperative Approach with</h2>
+          <h2 class="blue">Event Bus</h2>
+        </section>
+
+        <section>
+          <img src="img/lessons-todo-app.jpg" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h2 class="blue">Producer</h2>
+          <ul class="left">
+            <li>EventBusExperimentsComponent</li>
+          </ul>
+          <h2 class="blue">Consumers</h2>
+          <ul class="left">
+            <li>LessonsListComponent</li>
+            <li>LessonsCounterComponent</li>
+          </ul>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// event-bus-experiments.component.html
+//
+<div class="course-container">
+
+    <h2> Event Bus Experiments</h2>
+
+    <lessons-counter></lessons-counter>
+
+    <lessons-list></lessons-list>
+
+    <input #input/>
+
+    <button class="button button-highlight"
+
+(click)="addLesson(input.value)">Add Lesson</button>
+</div>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// lesson.ts
+//
+export interface Lesson {
+  id: number;
+  description: string;
+  duration?: string;
+  completed?: boolean;
+}
+            </code>
+          </pre>
+        </section>
+
+
 
 
         <!-- <section>
