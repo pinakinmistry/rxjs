@@ -482,6 +482,36 @@ export class EventBusExperimentsComponent implements OnInit {
           </section>
 
           <section>
+              <pre>
+                <code>
+  // lessons-counter.component.ts
+  //
+  export class LessonsCounterComponent implements Observer {
+
+      // Local state
+      lessonsCounter = 0;
+
+      constructor() {
+          // Subscribe to initial list of lessons
+          globalEventBus.subscribeObserver(LESSONS_LIST_AVAILABLE, this);
+
+          // Subscribe to new lesson being added in future
+          // to update the local lessons list
+          globalEventBus.subscribeObserver(ADD_NEW_LESSON, {
+              notify: lessonText => this.lessonsCounter += 1
+          } );
+      }
+
+      notify(data: Lesson[]) {
+          // Update the counter based on new state
+          this.lessonsCounter = data.length;
+      }
+  }
+                </code>
+              </pre>
+            </section>
+
+          <section>
             <pre>
               <code>
 // lessons-list.component.ts
@@ -562,7 +592,7 @@ export class LessonsListComponent implements Observer {
           </section>
 
           <section>
-            <h3 class="blue">Problems in LessonsListComponents</h3>
+            <h4 class="blue">EventBusExperimentsComponent and LessonsListComponent</h4>
             <ul>
               <li>Mutating Shared State</li>
               <li>Mixed data ownership</li>
@@ -573,33 +603,10 @@ export class LessonsListComponent implements Observer {
           </section>
 
           <section>
-            <pre>
-              <code>
-// lessons-counter.component.ts
-//
-export class LessonsCounterComponent implements Observer {
-
-    // Local state
-    lessonsCounter = 0;
-
-    constructor() {
-        // Subscribe to initial list of lessons
-        globalEventBus.subscribeObserver(LESSONS_LIST_AVAILABLE, this);
-
-        // Subscribe to new lesson being added in future
-        // to update the local lessons list
-        globalEventBus.subscribeObserver(ADD_NEW_LESSON, {
-            notify: lessonText => this.lessonsCounter += 1
-        } );
-    }
-
-    notify(data: Lesson[]) {
-        // Update the counter based on new state
-        this.lessonsCounter = data.length;
-    }
-}
-              </code>
-            </pre>
+            <h2 class="blue">Reactive Approach Using Streams</h2>
+            <h4>Updating state and notifying observers should be</h4>
+            <h1 class="blue">Private to Data Owner</h1>
+            <h4>Separating the ability of emitting new data from subcribe/unsubscribe</h4>
           </section>
 
 
