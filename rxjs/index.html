@@ -763,6 +763,37 @@ export const store = new DataStore();
             </pre>
           </section>
 
+          <section>
+            <pre>
+              <code>
+// event-bus-experiments.component.ts
+//
+import {store} from "./app-data.service";
+
+export class EventBusExperimentsComponent implements OnInit {
+
+    ngOnInit() {
+        // Notify all observers about Lessons
+        store.initializeLessonsList(testLessons);
+
+        setTimeout(() => {
+            const newLesson = {
+                id: Math.random(),
+                description: 'New lesson arriving from backend'
+            };
+            store.addLesson(newLesson);
+        }, 5000);
+    }
+
+    addLesson(lessonText: string) {
+        store.addLesson(newLesson);
+    }
+}
+              </code>
+            </pre>
+
+          </section>
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
