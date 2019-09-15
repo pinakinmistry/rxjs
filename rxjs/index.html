@@ -561,6 +561,36 @@ export class LessonsListComponent implements Observer {
             </pre>
           </section>
 
+          <section>
+            <pre>
+              <code>
+// lessons-counter.component.ts
+//
+export class LessonsCounterComponent implements Observer {
+
+    // Local state
+    lessonsCounter = 0;
+
+    constructor() {
+        // Subscribe to initial list of lessons
+        globalEventBus.subscribeObserver(LESSONS_LIST_AVAILABLE, this);
+
+        // Subscribe to new lesson being added in future
+        // to update the local lessons list
+        globalEventBus.subscribeObserver(ADD_NEW_LESSON, {
+            notify: lessonText => this.lessonsCounter += 1
+        } );
+    }
+
+    notify(data: Lesson[]) {
+        // Update the counter based on new state
+        this.lessonsCounter = data.length;
+    }
+}
+              </code>
+            </pre>
+          </section>
+
 
         <!-- <section>
           <h2>Bleeding Edge!</h2>
