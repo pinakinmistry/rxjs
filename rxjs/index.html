@@ -791,7 +791,31 @@ export class EventBusExperimentsComponent implements OnInit {
 }
               </code>
             </pre>
+          </section>
 
+          <section>
+            <pre>
+              <code>
+import {store, Observer} from "../event-bus-experiments/app-data.service";
+
+// Implements Observer to get notified about next data
+export class LessonsCounterComponent implements Observer, OnInit {
+
+    lessonsCounter = 0;
+
+    ngOnInit() {
+        console.log('lesson list component is subscribeed as observer ..');
+        store.lessonsList$.subscribe(this);
+    }
+
+    next(data: Lesson[]) {
+        console.log('counter component received data ..');
+        this.lessonsCounter = data.length;
+    }
+
+}
+              </code>
+            </pre>
           </section>
 
         <!-- <section>
