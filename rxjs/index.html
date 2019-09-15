@@ -659,6 +659,60 @@ interface Subject extends Observer, Observable  {
             </pre>
           </section>
 
+          <section>
+            <pre>
+              <code>
+// app-data.service.ts
+//
+class SubjectImplementation implements Subject {
+    private observers: Observer[] = [];
+
+    subscribe(obs: Observer) {
+        this.observers.push(obs);
+    }
+
+    unsubscribe(obs: Observer) {
+        _remove(this.observers, el => el === obs);
+    }
+
+    next(data: any) {
+        this.observers.forEach(obs => obs.next(data));
+    }
+}
+
+// Initialization of lessons private to this service
+const lessons: Lesson[] = [];
+
+// lessonsListSubject is private in this service
+// so that no other component can emit data using next()
+const lessonsListSubject = new SubjectImplementation();
+
+// Public Observable
+// Note how public subscribe and unsubscribe of Observable is
+// calling private subscribe and unsubscribe of Subject
+// This is how we hide the data ownership in Subject
+// using Observable as its public interface
+export const lessonsList$: Observable = {
+    subscribe: obs => {
+        lessonsListSubject.subscribe(obs);
+        // Notify late subscribers with current data
+        obs.next(lessons);
+    },
+    unsubscribe: obs => lessonsListSubject.subscribe(obs),
+};
+
+// Populate and Notify
+export function initializeLessonsList(newList: Lesson[]) {
+    // Deep cloning newList to avoid unintentional
+    // sharing of list with component
+    lessons = _.cloneDeep(newList);
+    // Notify all observers about new lessons list
+    lessonsListSubject.next(lessons);
+}
+              </code>
+            </pre>
+          </section>
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
