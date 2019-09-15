@@ -609,6 +609,55 @@ export class LessonsListComponent implements Observer {
             <h4>Separating the ability of emitting new data from subcribe/unsubscribe</h4>
           </section>
 
+          <section>
+            <h2 class="blue">Subject, Observable and Observer</h2>
+            <ul>
+              <li><em>`Subject`</em> is private interface for producer to emit data/notify observers</li>
+              <li><em>`Observable`</em> is public interface for observers to subscribe/unsubscribe</li>
+              <li><em>`Observer`</em> is consumer of data/event emitted by Subject</li>
+            </ul>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// Consumer
+//
+export interface Observer {
+  next(data: any);
+  complete();
+  error();
+}
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// Public stream
+export interface Observable {
+  subscribe(obs: Observer);
+  unsubscribe(obs: Observer);
+}
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// Subject is a producer of data/event.
+// It is private so that only owner of data can emit new data and notify observers
+// It extends both Observer and Observable so that it can
+// produce/emit new data or event privately using `next()`
+// and provides a public interface to `Observers` to subscribe and unsubsribe.
+//
+interface Subject extends Observer, Observable  {
+}
+              </code>
+            </pre>
+          </section>
 
         <!-- <section>
           <h2>Bleeding Edge!</h2>
