@@ -796,6 +796,8 @@ export class EventBusExperimentsComponent implements OnInit {
           <section>
             <pre>
               <code>
+// lessons-counter.component.ts
+//
 import {store, Observer} from "../event-bus-experiments/app-data.service";
 
 // Implements Observer to get notified about next data
@@ -813,6 +815,38 @@ export class LessonsCounterComponent implements Observer, OnInit {
         this.lessonsCounter = data.length;
     }
 
+}
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// lessons-list.component.ts
+//
+import {store, Observer} from "../event-bus-experiments/app-data.service";
+
+// Implements Observer to get notified about next data
+export class LessonsListComponent implements Observer, OnInit {
+
+    lessons: Lesson[] = [];
+
+    ngOnInit() {
+        store.lessonsList$.subscribe(this);
+    }
+
+    next(data: Lesson[]) {
+        this.lessons = data;
+    }
+
+    toggleLessonViewed(lesson:Lesson) {
+        store.toggleLesson(lesson);
+    }
+
+    delete(lesson:Lesson) {
+        store.deleteLesson(lesson);
+    }
 }
               </code>
             </pre>
