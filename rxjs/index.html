@@ -713,6 +713,56 @@ export function initializeLessonsList(newList: Lesson[]) {
             </pre>
           </section>
 
+          <section>
+            <pre>
+              <code>
+// app-data.service.ts
+//
+class DataStore {
+  private lessons: Lesson[] = [];
+  private lessonsListSubject = new SubjectImplementation();
+
+  public lessonsList$: Observable = {
+      subscribe: obs => {
+          this.lessonsListSubject.subscribe(obs);
+          obs.next(this.lessons);
+      },
+      unsubscribe: obs => this.lessonsListSubject.subscribe(obs),
+  };
+
+  // Broadcast every mutation
+  public initializeLessonsList(newList: Lesson[]) {
+      this.lessons = _.cloneDeep(newList);
+      this.broadcast();
+  }
+
+  public addLesson(newLesson: Lesson) {
+      this.lessons.push(_.cloneDeep(newLesson));
+      this.broadcast();
+  }
+
+  public toggleLesson(toggled: Lesson) {
+      const lesson = _.find(this.lessons, lesson => lesson.id === toggled.id);
+      lesson.completed != lesson.completed;
+      this.broadcast();
+  }
+
+  public deleteLesson(deleted: Lesson) {
+      _.remove(this.lessons, lesson => lesson.id === deleted.id);
+      this.broadcast();
+  }
+
+  // Common broadcast method
+  private broadcast() {
+      this.lessonsListSubject.next(this.lessons);
+  }
+}
+
+export const store = new DataStore();
+              </code>
+            </pre>
+          </section>
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
