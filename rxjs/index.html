@@ -963,6 +963,29 @@ export const store = new DataStore();
           </pre>
         </section>
 
+        <section>
+          <h1 class="blue">Updating Components</h1>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+import {Observer} from 'rxjs';
+
+class LessonsListComponent implements Observer<Lesson[]>, OnInit {
+    ...
+    next(data: Lesson[]) {
+        ...
+    }
+
+    complete() { ... }
+
+    error(err: any) { ... }
+}
+            </code>
+          </pre>
+        </section>
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
