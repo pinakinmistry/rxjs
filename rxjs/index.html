@@ -1000,6 +1000,89 @@ class LessonsListComponent implements Observer<Lesson[]>, OnInit {
           </ul>
         </section>
 
+        <section>
+          <h1 class="blue">Problems with Services</h1>
+          <ul>
+            <li>Maintaining local state</li>
+            <li>Nested subscriptions due to nested async event handling/API calls</li>
+            <li>Maintaining subscriptions and later unsubscribe them</li>
+            <li>Long lived observables causing memory leaks</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1 class="blue">Stateless Service</h1>
+          <ul>
+            <li>No local states</li>
+            <li>No subscriptions</li>
+            <li>Return observables directly instead of subscribing</li>
+            <pre>
+              <code>
+  return observableAPICall()
+      .do(data => subject.next(data));
+              </code>
+            </pre>
+            <li>Short lived observable by unsubscribing using <em>`first()`</em></li>
+            <li>Avoid multiple calls to observable <em>`publishLast().refCount()`</em></li>
+          </ul>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// courses.service.ts
+//
+@Injectable()
+export class CoursesService {
+    // No Local State
+    // No Local Observable
+
+    constructor(private db: AngularFirebaseDatabase) {}
+
+    getAllCourses(): Observable<Course[]> {
+        return this.db.list('courses')
+            // Unsubscribe after first notification using first()
+            .first()
+            .do(console.log);
+    }
+
+    getLatestLessons(): Observable<Lesson[]> {
+        return this.db.list('lessons', {
+            query: {
+                orderByKey: true,
+                limitToLast: 10
+            }
+        })
+        // Unsubscribe after first notification using first()
+        .first()
+        .do(console.log);
+    }
+
+    findCourseByUrl(courseUrl: string): Observable<Course> {
+        return this.db.list('courses', {
+            query: {
+                orderByChild: 'url',
+                equalTo: courseUrl
+            }
+        })
+        .first()
+        .map(data => data[0]);
+    }
+
+    findLessonsForCourse(courseId: string): Observable<Lesson[]> {
+        this.db.list('lessons', {
+            query: {
+                orderByChild: 'courseId',
+                equalTo: courseId
+            }
+        })
+        .first();
+    }
+}
+            </code>
+          </pre>
+        </section>
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>

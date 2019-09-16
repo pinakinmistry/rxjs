@@ -16,6 +16,10 @@
 	color: white;
 }
 
+.reveal pre {
+	margin: 0;
+}
+
 code {
 	font-size: 22px !important;
 	line-height: 28px !important;
