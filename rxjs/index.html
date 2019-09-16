@@ -909,6 +909,59 @@ store.subscribe(this);
             </pre>
           </section>
 
+          <section>
+            <h3>Replacing custom implementation with</h3>
+            <h1 class="blue">RxJS Library</h1>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// app-data.service.ts
+//
+import {BehaviorSubject, Observable, Observer} from 'rxjs';
+
+class DataStore {
+    // No need of local state as the state can be maintained in the
+    // BehaviorSubject itself as it remembers the last emitted value.
+    // private lessons: Lesson[] = [];
+    private lessonsListSubject = new BehaviorSubject([]);
+
+    public lessonsList$: Observable<Lesson[]> = lessonsListSubject.asObservable();
+
+    public initializeLessonsList(newList: Lesson[]) {
+        this.lessons = _.cloneDeep(newList);
+        this.broadcast();
+    }
+
+    public addLesson(newLesson: Lesson) {
+        const lessons = this.cloneLessons();
+        lessons.push(_.cloneDeep(newLesson));
+        this.lessonsListSubject.next(lessons);
+    }
+
+    public toggleLesson(toggled: Lesson) {
+        const lessons = this.cloneLessons();
+        const lesson = _.find(lessons, lesson => lesson.id === toggled.id);
+        lesson.completed != lesson.completed;
+        this.lessonsListSubject.next(lessons);
+    }
+
+    deleteLesson(deleted: Lesson) {
+        const lessons = this.cloneLessons();
+        _.remove(lessons, lesson => lesson.id === deleted.id);
+        this.lessonsListSubject.next(lessons);
+    }
+
+    private cloneLessons() {
+        return _.cloneDeep(this.LessonsListSubject.getValue());
+    }
+}
+
+export const store = new DataStore();
+            </code>
+          </pre>
+        </section>
 
         <!-- <section>
           <h2>Bleeding Edge!</h2>
