@@ -860,6 +860,56 @@ export class LessonsListComponent implements Observer, OnInit {
             </pre>
           </section>
 
+          <section>
+            <h1 class="blue">Store as Observable</h1>
+            <h3>By implementing Observable interface</h3>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// app-data.service.ts
+//
+class DataStore implements Observable {
+    private lessons: Lesson[] = [];
+    private lessonsListSubject = new SubjectImplementation();
+
+    subscribe(obs: Observer) {
+        this.lessonsListSubject.subscribe(obs);
+        obs.next(this.lessons);
+    }
+
+    unsubscribe(obs: Observer) {
+        this.lessonsListSubject.subscribe(obs);
+    }
+
+    // ...
+}
+
+export const store = new DataStore();
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <h1 class="blue">Updating Components</h1>
+          </section>
+
+          <section>
+            <pre>
+              <code>
+// Any Components
+//
+// ...
+// Change below
+store.lessonsList$.subscribe(this);
+// to
+store.subscribe(this);
+              </code>
+            </pre>
+          </section>
+
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
