@@ -1864,6 +1864,83 @@ export class LoadingComponent implements OnInit {
           </pre>
         </section>
 
+        <section>
+          <h2>Example #8: Save Draft Using</h2>
+          <h1 class="blue">Form as an observable</h1>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// create-lesson.component.ts
+//
+export class CreateLessonComponent extends OnInit {
+
+    form: FormGroup;
+
+    private static readonly DRAFT_COOKIE = 'lesson-draft';
+
+    constructor(
+        private fb: FormBuilder,
+    ) {
+        this.form = this.fb.group({
+            description: ['', Validators.required],
+            url: ['', Validators.required],
+            longDescription: [''],
+        });
+    }
+
+    ngOnInit() {
+        const draft = Cookies.get(CreateLessonComponent.DRAFT_COOKIE);
+        if(draft) {
+            this.form.setValue(JSON.parse(draft));
+        }
+
+        this.form.valueChanges
+            .filter(() => this.form.valid)
+            .do(validDraft => Cookies.set(
+                CreateLessonComponent.DRAFT_COOKIE, JSON.stringify(validDraft)
+            ))
+            .subscribe();
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// create-lesson.component.html
+//
+<div class="screen-container">
+    <h2>Create New Lesson</h2>
+
+    <form [formGroup]="form" autocomplete="false" class="lesson-form">
+        <fieldset>
+            <legend>Lesson</legend>
+            <div class="form-field">
+                <label>Description</label>
+                <input name="title" formControlName="description" />
+            </div>
+            <div class="form-field">
+                <label>Lesson Url</label>
+                <input name="title" formControlName="url" />
+            </div>
+            <div class="form-field">
+                <label>Long Description</label>
+                <input name="title" formControlName="longDescription" />
+            </div>
+        </fieldset>
+
+        <div class="form-buttons">
+            <button class="button button-primary">Save New Lesson</button>
+        </div>
+    </form>
+</div>
+            </code>
+          </pre>
+        </section>
 
 
 
