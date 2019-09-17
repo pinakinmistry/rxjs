@@ -1369,6 +1369,55 @@ export class LoginComponent implements OnInit {
           </pre>
         </section>
 
+        <section>
+          <h3>Avoid Nested Subscription using</h3>
+          <h1 class="blue"><em>`switchMap()`</em></h1>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// course-detail.component.ts
+//
+export class CourseDetailComponent implements OnInit {
+
+    //Local Observable
+    course$: Observable<Course>;
+    lessons$: Observable<Lesson[]>;
+
+    constructor(
+        private route: ActivatedRoute,
+        private coursesService: CoursesService,
+        private newsLetterService: NewsLetterService,
+        private userService: UserService,
+    ) {}
+
+    ngOnInit() {
+        // Avoid Nested Subscriptions using switchMap
+        this.course$ = this.route.params
+            .switchMap(params => this.coursesService.findCourseByUrl(params['id']))
+            .first()
+            .publishLast().refCount();
+
+        this.lessons$ = this.course
+            .switchMap(course => this.coursesService.findLessonsForCourse(course.id))
+            .first()
+            .publishLast().refCount();
+    }
+
+    onSubscribe(email: string) {
+        this.newsLetterService.subscribeToNewsLetter(email)
+            .subscribe(
+                () => alert('Subscription successful'),
+                console.error
+            );
+    }
+
+}
+            </code>
+          </pre>
+        </section>
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
