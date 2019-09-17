@@ -1418,6 +1418,152 @@ export class CourseDetailComponent implements OnInit {
           </pre>
         </section>
 
+        <section>
+          <h3>Example #4</h3>
+          <h2 class="blue">Paginated Table as an Observable</h2>
+        </section>
+
+        <section>
+          <h4 class="blue">Let's implement `lessons$` observable as a paginated table</h4>
+          <img src="img/paginated-table.jpg" width="1100" height="700">
+        </section>
+
+
+        <section>
+          <pre>
+            <code>
+// course.component.html
+//
+<div class="course-md">
+    <h2>{{(course$ | async as course).description}}</h2>
+
+    <div class="lessons-nav">
+        <button (click)="previousLessons()">Previous</button>
+        <button (click)="nextLessons()">Next</button>
+    </div>
+    <lessons-list lessons="lessons$ | async"></lessons-list>
+</div>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// course.component.ts
+//
+export class CourseComponent extends OnInit {
+
+    @Input() id: number;
+
+    course$: Observable<Course>;
+    lessons$: Observable<Lesson[]>;
+
+    constructor(
+        private coursesService: CoursesService,
+        private lessonsService: LessonsService,
+    ) {}
+
+    ngOnInit() {
+        this.course$ = this.coursesService.getCourseById(this.id);
+        this.lessons$ = this.lessonsService.lessonsPage$;
+        this.lessonsService.loadFirstPage(this.id);
+    }
+
+    previousLessons() {
+        this.lessonsService.previous();
+    }
+
+    nextLessons() {
+        this.lessonsService.next();
+    }
+
+}
+            </code>
+          </pre>
+        </section>
+
+
+        <section>
+          <pre>
+            <code>
+// courses.service.ts
+//
+export class CoursesService {
+
+    constructor(private http: Http) {}
+
+    getCourseById(courseId: number): Observable<Course> {
+        return this.http.get(`/api/courses/${courseId}`)
+            .map(res => res.json());
+    }
+
+    getLessonDetails(lessonId: string): Observable<Lesson> {
+        return this.http.get(`/api/lessons/${lessonId}`)
+            .map(res => res.json());
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// lessons.service.ts
+//
+export class LessonsService {
+
+    private courseId: number;
+    // Private Subject
+    private subject = new BehaviorSubject<Lesson[]>([]);
+    // Public Observable
+    lessonsPage$: Observable<Lesson[]> = this.subject.asObservable();
+    currentPageNumber = 1;
+
+    constructor(private http: Http) {}
+
+    loadFirstPage(courseId: number) {
+        this.courseId = courseId;
+        this.currentPageNumber = 1;
+        this.loadPage(this.currentPageNumber);
+    }
+
+    previous() {
+        if (this.currentPageNumber - 1 >= 1) {
+            this.currentPageNumber -= 1;
+            this.loadPage(this.currentPageNumber);
+        }
+    }
+
+    next() {
+        this.currentPageNumber += 1;
+        this.loadPage(this.currentPageNumber);
+    }
+
+    loadPage(pageNumber: number) {
+        this.http.get('/api/lessons', {
+            params: {
+                courseId: this.courseId,
+                pageNumber: 1,
+                pageSize: LessonsService.PAGE_SIZE,
+            }
+        })
+        .map(res => res.json().payload)
+        .subscribe(
+            lessons => this.subject.next(lessons),
+            // Avoid error handling at subject level as
+            // it will stop emitting new values once in error
+            // error => this.subject.error(error)
+        );
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+
+
         <!-- <section>
           <h2>Bleeding Edge!</h2>
           <h2 class="blue fragment">There will be Blood!</h2>
