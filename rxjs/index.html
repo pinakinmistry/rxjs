@@ -350,7 +350,7 @@ export interface Lesson {
         </section>
 
         <section>
-          <img src="img/subject-observer.jpg" alt="" width="1100" height="600" />
+          <img src="img/subject-observer.jpg" width="1100" height="600" />
         </section>
 
         <section>
@@ -651,7 +651,7 @@ export interface Observable {
 // It is private so that only owner of data can emit new data and notify observers
 // It extends both Observer and Observable so that it can
 // produce/emit new data or event privately using `next()`
-// and provides a public interface to `Observers` to subscribe and unsubsribe.
+// and provides a public interface to `Observers` to subscribe and unsubscribe.
 //
 interface Subject extends Observer, Observable  {
 }
@@ -1158,6 +1158,213 @@ export class HomeComponent implements OnInit {
         <div>Loading...</div>
     </ng-template>
 </div>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h1 class="blue">Observable Service</h1>
+          <h3>Some times we do need state in service</h3>
+          <h2 class="blue">in form of <em>`Observable`</em></h2>
+          <h3>that other components can subscribe to</h3>
+          <h3 class="blue fragment">Example?</h3>
+        </section>
+
+        <section>
+          <h3 class="blue">Logged In User as Observable</h3>
+          <img src="img/logged-in-user-ui.jpg" width="1100" height="700" >
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// user.ts
+//
+export interface User {
+    firstName: string;
+    lastName?: string;
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// user.service.ts
+//
+export const UNKNOWN_USER: User = {
+    firstName = 'Unknown',
+};
+
+export class UserService {
+
+    // Private Subject
+    private subject = new BehaviorSubject(UNKNOWN_USER);
+    // Public Observable
+    user$: Observable<User> = this.subject.asObservable();
+
+    constructor(private http: Http) {}
+
+    login(email: string, password: string): Observable<User> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post('/api/login', {
+            email,
+            password,
+        })
+        .map(res => res.json())
+        .do(user => this.subject.next(user))
+        // Avoid multiple calls by ensure observable completes first
+        // before emitting the value
+        .publishLast().refCount();
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// top-menu.component.ts
+//
+export class TopMenuComponent implements OnInit {
+
+    isUserLoggedIn$: Observable<boolean>;
+
+    constructor(private userService: UserService) {}
+
+    ngOnInit() {
+        this.isUserLoggedIn$ = this.userService.user$
+            .map(user => user !== UNKNOWN_USER);
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// top-menu.component.html
+//
+<header class="l-header">
+    <ul class="top-menu disable-link-styles">
+        <li>
+            <a routerLink="home" routerLinkActive="menu-active">Home</a>
+        </li>
+        <li *ngIf="!(isUserLoggedIn$ | async)">
+            <a routerLink="login" routerLinkActive="menu-active">Home</a>
+        </li>
+        <li *ngIf="(isUserLoggedIn$ | async)">
+            <a (click)="logout()">Logout</a>
+        </li>
+    </ul>
+</header>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// course-detail.component.html
+//
+<div class="screen-container">
+
+    <course-detail-header
+        [course]="course"
+        [lessons]="lessons"
+        [firstName]="(userService.$user | async).firstName"
+        (subscribe)="onSubscribe($event)"
+    ></course-detail-header>
+
+    <table class="lessons-list card card-strong"
+        *ngIf="latestLessons$ | async as lessons else loadingLessons">
+        <tr class="lesson-summary" *ngFor="let lesson of lessons">
+            <td>
+                {{lesson.description}}
+            </td>
+            <td>
+                <i class="md-icon duration-icon">access_time</i>
+                <span>{{lesson.duration}}</span>
+            </td>
+        </tr>
+    </table>
+
+    <ng-template #loadinglessons>
+        <div>Loading...</div>
+    </ng-template>
+</div>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// course-detail.component.ts
+//
+export class CourseDetailComponent implements OnInit {
+
+    //Still Local State
+    course: Course;
+    lessons: Lesson[];
+
+    constructor(
+        private route: ActivatedRoute,
+        private coursesService: CoursesService,
+        private newsLetterService: NewsLetterService,
+        private userService: UserService,
+    ) {}
+
+    ngOnInit() {
+        // Nested Subscriptions
+        route.params
+            .subscribe(params => {
+                this.coursesService.findCourseByUrl(params['id'])
+                    .subscribe(data => {
+                        this.course = data;
+                        this.courseService.findLessonsForCourse(this.course.id)
+                            .subscribe(data => this.lessons = data);
+                    });
+            });
+    }
+
+    onSubscribe(email: string) {
+        this.newsLetterService.subscribeToNewsLetter(email)
+            .subscribe(
+                () => alert('Subscription successful'),
+                console.error
+            );
+    }
+
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// login.component.ts
+//
+export class LoginComponent implements OnInit {
+
+    constructor(
+      private userService: UserService,
+      private router: Router
+    ) {}
+
+    login(email: string, password: string) {
+        this.userService.login(email, password)
+            .subscribe(
+                () => this.router.navigateByUrl('/home'),
+                console.error
+            );
+    }
+}
             </code>
           </pre>
         </section>
