@@ -1563,6 +1563,178 @@ export class LessonsService {
           </pre>
         </section>
 
+        <section>
+          <h2 class="blue">Example #5: Error Handling</h2>
+          <ul>
+            <li>Avoid `subject.error()` as it cannot emit values once in error</li>
+            <li>Avoid `subscribe()`ing at service level</li>
+            <li>Instead return `Observable<any>` using `do(data => subject.next(data))`</li>
+            <li>And `subscribe()` for data and error handling at component level</li>
+          </ul>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// lessons.service.ts
+//
+export class LessonsService {
+
+    private courseId: number;
+    private subject = new BehaviorSubject<Lesson[]>([]);
+    lessonsPage$: Observable<Lesson[]> = this.subject.asObservable();
+    currentPageNumber = 1;
+
+    constructor(private http: Http) {}
+
+    loadFirstPage(courseId: number): Observable<any> {
+        this.courseId = courseId;
+        this.currentPageNumber = 1;
+        return this.loadPage(this.currentPageNumber);
+    }
+
+    previous(): Observable<any> {
+        if (this.currentPageNumber - 1 >= 1) {
+            this.currentPageNumber -= 1;
+            return this.loadPage(this.currentPageNumber);
+        }
+    }
+
+    next(): Observable<any> {
+        this.currentPageNumber += 1;
+        return this.loadPage(this.currentPageNumber);
+    }
+
+    loadPage(pageNumber: number): Observable<any> {
+        return this.http.get('/api/lessons', {
+            params: {
+                courseId: this.courseId,
+                pageNumber: 1,
+                pageSize: LessonsService.PAGE_SIZE,
+            }
+        })
+        .map(res => res.json().payload)
+        .do(lessons => this.subject.next(lessons))
+        .publishLast().refCount();
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// course.component.ts
+//
+export class CourseComponent extends OnInit {
+
+    @Input() id: number;
+
+    course$: Observable<Course>;
+    lessons$: Observable<Lesson[]>;
+    details$: Observable<Lesson>;
+
+    constructor(
+        private coursesService: CoursesService,
+        private lessonsService: LessonsService,
+        private messagesService: MessagesService,
+    ) {}
+
+    ngOnInit() {
+        this.course$ = this.coursesService.getCourseById(this.id);
+        this.lessons$ = this.lessonsService.lessonsPage$;
+        this.lessonsService.loadFirstPage(this.id)
+            .subscribe(
+                () => {},
+                err => messagesService.error('Could not load first page')
+            );
+    }
+
+    previousLessons() {
+        this.lessonsService.previous().subscribe(
+            () => {},
+            err => messagesService.error('Could not load previous lessons')
+        );
+    }
+
+    nextLessons() {
+        this.lessonsService.next().subscribe(
+            () => {},
+            err => messagesService.error('Could not load next lessons')
+        );
+    }
+
+    selectDetails(lesson: Lesson) {
+        this.details$ = this.coursesService.getLessonDetails(lesson.url);
+    }
+
+    backToMaster() {
+        this.details$ = undefined;
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// messages.services.ts
+//
+export class MessagesService {
+
+    private errorsSubject = new BehaviorSubject<string[]>([]);
+    public errors$ = errorsSubject.asObservable();
+
+    constructor() {}
+
+    error(...errors: string[]) {
+        this.errorsSubject.next(errors);
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// messages.component.ts
+//
+export class MessagesComponent implements OnInit {
+
+    errors$: Observable<string[]> = Observable.of([]);
+
+    constructor(messagesService: MessagesService) {}
+
+    ngOnInit() {
+        this.errors$ = this.messagesService.$errors;
+    }
+
+    close() {
+        this.messagesService.error();
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// messages.component.html
+//
+<div clsas="messages-frame" *ngIf="(messages$ | async as messages).length > 0">
+    <div class="messages messages-error">
+        <i class="md-icon close-icon" (click)="close()">close</i>
+        <div *ngFor="let message of messages">{{message}}</div>
+    </div>
+</div>
+            </code>
+          </pre>
+        </section>
+
 
 
         <!-- <section>
