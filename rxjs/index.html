@@ -1819,6 +1819,53 @@ export class CourseDetailComponent implements OnInit {
           </pre>
         </section>
 
+        <section>
+          <h2 class="blue">Example #7: Global Loading Indicator</h2>
+          <h3>Global loading indicator can be implemented by using
+          <h1 class="blue">`router.events` observable</h1>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// loading.compoent.html
+//
+<div class="loading-indicator" *ngIf="($loading | async)">
+    <img src="/images/loading.gif" />
+</div>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// loading.component.ts
+//
+export class LoadingComponent implements OnInit {
+
+    loading$: Observable<boolean>;
+
+    constructor(
+        private router: Router
+    ) {}
+
+    ngOnInit() {
+        // A route with data pre fetching
+        // can use RoutesRecognized and NavigationStart
+        // to observe whether route and its required data is still loading
+        this.loading$ = this.router.events.map(
+          event => event instanceof RoutesRecognized ||
+            event instanceof NavigationStart
+        );
+    }
+}
+            </code>
+          </pre>
+        </section>
+
+
+
 
 
 
