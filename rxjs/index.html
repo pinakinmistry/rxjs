@@ -388,10 +388,10 @@ export interface Observer {
 
 interface Subject {
   // Accepts an eventType and observer that needs to be notified on that event
-  subscribeObserver(eventType:string, obs:Observer);
+  registerObserver(eventType:string, obs:Observer);
 
   // Accepts an observer that no longer needs to be notified on given eventType
-  unsubscribeObserver(eventType:string, obs:Observer);
+  unregisterObserver(eventType:string, obs:Observer);
 
   // Notifies all observers of given eventType with given data
   notifyObservers(eventType:string, data:any);
@@ -412,12 +412,12 @@ interface Subject {
     private observers : {[key:string]: Observer[]} = {};
 
     // Maintains list of all observers of given eventType
-    subscribeObserver(eventType:string, obs: Observer) {
+    registerObserver(eventType:string, obs: Observer) {
         this.observersPerEventType(eventType).push(obs);
     }
 
     // Removes given observer from the list of given eventType
-    unsubscribeObserver(eventType:string, obs: Observer) {
+    unregisterObserver(eventType:string, obs: Observer) {
         const newObservers = _.remove(
             this.observersPerEventType(eventType), el => el === obs );
         this.observers[eventType] = newObservers;
@@ -516,11 +516,11 @@ export class EventBusExperimentsComponent implements OnInit {
 
       constructor() {
           // Subscribe to initial list of lessons
-          globalEventBus.subscribeObserver(LESSONS_LIST_AVAILABLE, this);
+          globalEventBus.registerObserver(LESSONS_LIST_AVAILABLE, this);
 
           // Subscribe to new lesson being added in future
           // to update the local lessons list
-          globalEventBus.subscribeObserver(ADD_NEW_LESSON, {
+          globalEventBus.registerObserver(ADD_NEW_LESSON, {
               notify: lessonText => this.lessonsCounter += 1
           } );
       }
@@ -546,11 +546,11 @@ export class LessonsListComponent implements Observer {
 
     constructor() {
         // Subscribe to initial list of lessons
-        globalEventBus.subscribeObserver(LESSONS_LIST_AVAILABLE, this);
+        globalEventBus.registerObserver(LESSONS_LIST_AVAILABLE, this);
 
         // Subscribe to new lesson being added in future
         // to update the local lessons list
-        globalEventBus.subscribeObserver(ADD_NEW_LESSON, {
+        globalEventBus.registerObserver(ADD_NEW_LESSON, {
             notify: lessonText => {
                 // this.lessons here is pointing to
                 // EventBusExperimentsComponent's lessons (local state)
