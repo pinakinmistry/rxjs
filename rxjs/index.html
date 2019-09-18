@@ -83,7 +83,15 @@
         </section>
 
         <section>
-          <h2 class="blue">Apps as State Machine</h2>
+          <img src="img/producer-consumer.jpg" width="1100" height="600" />
+        </section>
+
+        <section>
+          <h2>Extending same idea to...</h2>
+        </section>
+
+        <section>
+          <h3 class="blue">Apps as State Machines with Producers and Consumers</h3>
           <img src="images/clock.png" width="1100" height="600" />
         </section>
 
@@ -95,7 +103,9 @@
         <section>
           <h2>Modern Apps need</h2>
           <h1 class="blue">Modern Approach</h1>
-          <h3>By treating events as continuous observable streams</h3>
+          <h3>By treating data and events as</h3>
+          <h2 class="blue">Continuous Observable Streams</h1>
+          <h3>between Producers and Consumers</h2>
         </section>
 
         <section>
@@ -150,10 +160,6 @@
         </section>
 
         <section>
-          <img src="img/producer-consumer.jpg" width="1100" height="600" />
-        </section>
-
-        <section>
           <h3 class="blue">Paste below code in browser devtools console</h3>
           <pre>
             <code>
@@ -182,11 +188,11 @@ document.addEventListener('mousemove', function () {
         </section>
 
         <section>
-          <h1 class="blue">Declarative Approach</h1>
-          <h3>Hides Implementation Details</h2>
-          <h2 class="blue">With High Level Directives on <em>`what to do`</em></h3>
-          <h3>Delegating How Part to</h2>
-          <h1 class="blue">Library or Framework</h1>
+          <h3>Declarative Approach</h3>
+          <h2 class="blue">Hides Implementation Details</h2>
+          <h2>With High Level Directives on <em>`What To Do`</em></h3>
+          <h3 class="blue">Delegating <em>`How To Do` to</em></h2>
+          <h1>Library or Framework</h1>
           <h3 class="fragment">Examples?</h3>
         </section>
 
@@ -268,22 +274,24 @@ document.addEventListener('mousemove', function () {
 
         <section>
           <h3 class="blue">Drawbacks of Imperative/non Reactive Approach</h3>
-          <ul>
-            <li>Sharing data/state and its ownership</li>
-            <li>Copying data/state locally</li>
-            <li>Local updates not propogated to other consumers</li>
-            <li>Additional listeners to update local state</li>
-            <li>State ownership not defined</li>
-            <li>Global event bus</li>
-            <li>Public emitters of data</li>
-            <li>Timing issue; notifying consumers before they are subscribed</li>
-            <li>Sequencing issue</li>
-            <li>Low data encapsulation</li>
-            <li>Low cohesion</li>
-            <li>High coupling</li>
-            <li>Strange side effects</li>
-            <li>Spaghetti code</li>
-          </ul>
+          <div class="fragment">
+            <ul>
+              <li>Sharing data/state and its ownership</li>
+              <li>Copying data/state locally</li>
+              <li>Local updates not propogated to other consumers</li>
+              <li>Additional listeners to update local state</li>
+              <li>State ownership not defined</li>
+              <li>Global event bus</li>
+              <li>Public emitters of data</li>
+              <li>Timing issue; notifying consumers before they are subscribed</li>
+              <li>Sequencing issue</li>
+              <li>Low data encapsulation</li>
+              <li>Low cohesion</li>
+              <li>High coupling</li>
+              <li>Strange side effects</li>
+              <li>Spaghetti code</li>
+            </ul>
+          </div>
         </section>
 
         <section>
@@ -351,6 +359,7 @@ export interface Lesson {
         </section>
 
         <section>
+          <h2 class="blue">What's wrong here?</h2>
           <img src="img/subject-observer.jpg" width="1100" height="600" />
         </section>
 
@@ -504,7 +513,7 @@ export class EventBusExperimentsComponent implements OnInit {
       }
 
       notify(data: Lesson[]) {
-          // Update the counter based on new state
+          // Update local counter based on new state
           this.lessonsCounter = data.length;
       }
   }
@@ -596,7 +605,7 @@ export class LessonsListComponent implements Observer {
             <h4 class="blue">EventBusExperimentsComponent and LessonsListComponent</h4>
             <ul>
               <li>Mutating Shared State</li>
-              <li>Mixed data ownership</li>
+              <li>Mixed Data Ownership</li>
               <li>Tight Coupling</li>
               <li>Spaghetti Code</li>
               <li>Hard to Predict Side Effects</li>
@@ -648,6 +657,16 @@ export interface Observable {
           <section>
             <pre>
               <code>
+// Private to Producer
+interface Subject extends Observer, Observable  {
+}
+              </code>
+            </pre>
+          </section>
+
+          <!-- <section>
+            <pre>
+              <code>
 // Subject is a producer of data/event.
 // It is private so that only owner of data can emit new data and notify observers
 // It extends both Observer and Observable so that it can
@@ -658,7 +677,7 @@ interface Subject extends Observer, Observable  {
 }
               </code>
             </pre>
-          </section>
+          </section> -->
 
           <section>
             <pre>
@@ -994,11 +1013,15 @@ class LessonsListComponent implements Observer<Lesson[]>, OnInit {
             <li>Stateless Component</li>
             <li>Observable Service</li>
             <li>Pagination</li>
-            <li>Master Details</li>
             <li>Error Handling</li>
-            <li>Data Pre Fetching</li>
-            <li>Pre Save Forms</li>
+            <li>Route Data Pre Fetching</li>
+            <li>Global Loading Indicator</li>
+            <li>Save Drafts</li>
           </ul>
+        </section>
+
+        <section>
+          <h2 class="blue">Example #1: Stateless Service</h2>
         </section>
 
         <section>
@@ -1079,7 +1102,11 @@ export class CoursesService {
         </section>
 
         <section>
-          <h1 class="blue">Stateless Components</h1>
+          <h1 class="blue">Example #2: Stateless Component</h1>
+        </section>
+
+        <section>
+          <h1 class="blue">Stateless Component</h1>
           <ul>
             <li>No local state</li>
             <li>No subscription</li>
@@ -1161,6 +1188,10 @@ export class HomeComponent implements OnInit {
 </div>
             </code>
           </pre>
+        </section>
+
+        <section>
+          <h1 class="blue">Example #3: Observable Service</h1>
         </section>
 
         <section>
@@ -1421,7 +1452,7 @@ export class CourseDetailComponent implements OnInit {
 
         <section>
           <h3>Example #4</h3>
-          <h2 class="blue">Paginated Table as an Observable</h2>
+          <h2 class="blue">Paginated Table as Observable</h2>
         </section>
 
         <section>
@@ -1736,7 +1767,7 @@ export class MessagesComponent implements OnInit {
         </section>
 
         <section>
-          <h3 class="blue">Example #6: Router Data Prefetching</h3>
+          <h3 class="blue">Example #6: Route Data Prefetching</h3>
           <ul>
               <li>Pre fetch data using `resolve` property in route configuration</li>
               <li>`resolve` takes an object with data name and resolver service</li>
@@ -1866,7 +1897,7 @@ export class LoadingComponent implements OnInit {
 
         <section>
           <h2>Example #8: Save Draft Using</h2>
-          <h1 class="blue">Form as an observable</h1>
+          <h1 class="blue">Form as Observable</h1>
         </section>
 
         <section>
@@ -1993,7 +2024,7 @@ export class CreateLessonComponent extends OnInit {
         </section>
 
         <section>
-          <h2 class="blue">Happy GraphQLing</h2>
+          <h2 class="blue">Happy Reacting</h2>
           <img src="images/thumpsup.gif" width="600" height="500" />
           <h2>@pinakinmistry</h2>
         </section>
